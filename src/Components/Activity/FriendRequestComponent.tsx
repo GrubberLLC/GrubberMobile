@@ -6,8 +6,6 @@ const FriendRequestComponent = (props) => {
 
   const { member, rejectFriendRequest, acceptFriendRequest } = props
 
-  console.log(member)
-
   return (
     <View style={styles.profile}>
       <View style={styles.profileSections}>

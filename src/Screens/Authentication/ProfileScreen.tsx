@@ -74,7 +74,6 @@ const ProfileScreen = ({route}) => {
     
     signUp(signupData)
       .then((currentUser: any) => {
-        console.log('User signed up:', currentUser);
         profileData.user_id = currentUser.userId
         createUserProfile(profileData)
       })
@@ -85,11 +84,8 @@ const ProfileScreen = ({route}) => {
 
   const createUserProfile = (profile_data: any) => {
     const url = `https://grubberapi.com/api/v1/profiles/`; 
-    console.log(url)
-    console.log(profile_data)
     axios.post(url, profile_data)
       .then(response => {
-        console.log('Profile created successfully:', response.data);
         navigation.navigate('ConfirmEmailScreen', {username:username})
       })
       .catch(error => {

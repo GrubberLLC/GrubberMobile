@@ -67,7 +67,6 @@ const UserProfileScreen  = ({route}) => {
     let url = `https://grubberapi.com/api/v1/friends/`
     axios.post(url, favoriteData)
       .then(response => {
-        console.log(response.data)
         profile.ppublic === 0 
           ? getRelatiobship(profile.user_id) 
           : createNewActivity(response.data.id)
@@ -104,11 +103,9 @@ const UserProfileScreen  = ({route}) => {
 
   const getUserFavorites = (user_id: string) => {
     setFavorites([])
-    console.log(user_id)
     let url = `https://grubberapi.com/api/v1/favorites/user/${user_id}`
     axios.get(url)
       .then(response => {
-        console.log('favorites: ', response.data.length)
         setFavorites(response.data)
       })
       .catch(error => {
@@ -145,7 +142,6 @@ const UserProfileScreen  = ({route}) => {
     let url = `https://grubberapi.com/api/v1/friends/relation/${user.userId}/${user_id}`
     axios.get(url)
       .then(response => {
-        console.log(response.data.length)
         response.data.length === 0
           ? null
           : setRelationship(response.data[0])
@@ -155,8 +151,6 @@ const UserProfileScreen  = ({route}) => {
         throw error;
       });
   }
-
-  console.log(profile.profile_picture)
 
   return (
     <View style={styles.container}>

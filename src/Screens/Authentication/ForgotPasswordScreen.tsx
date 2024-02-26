@@ -17,7 +17,6 @@ const ForgotPasswordScreen = () => {
   const ResetUsersPassword = () => {
     resetPassword({username})
       .then(response => {
-        console.log(response)
         navigation.navigate('LoginScreen')
       })
       .catch(error => {

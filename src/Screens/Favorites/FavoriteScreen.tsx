@@ -17,7 +17,6 @@ const FavoriteScreen  = () => {
 
   const getUserFavorites = (user_id: string) => {
     setFavorites([])
-    console.log(user_id)
     let url = `https://grubberapi.com/api/v1/favorites/user/${user_id}`
     axios.get(url)
       .then(response => {
@@ -30,12 +29,9 @@ const FavoriteScreen  = () => {
   }
 
   const removeFromFavorites = (id: number) => {
-    console.log(id)
     let url = `https://grubberapi.com/api/v1/favorites/${id}`
-    console.log(url)
     axios.delete(url)
       .then(response => {
-        console.log(response.data)
         getUserFavorites(user.userId)
       })
       .catch(error => {
@@ -57,7 +53,6 @@ const FavoriteScreen  = () => {
   );
 
   useEffect(() => {
-    console.log("favorites length: ", favorites.length)
   }, [favorites])
 
   return (

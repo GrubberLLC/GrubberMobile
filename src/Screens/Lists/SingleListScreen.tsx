@@ -44,7 +44,6 @@ const SingleListScreen = ({route}) => {
     let url = `https://grubberapi.com/api/v1/placeInList/list/${list_id}`
     axios.get(url)
       .then(response => {
-        console.log(response.data.length)
         setListPlaces(response.data)
       })
       .catch(error => {
@@ -57,7 +56,6 @@ const SingleListScreen = ({route}) => {
     const url = `https://grubberapi.com/api/v1/members/list/${list_id}`
     axios.get(url)
       .then(response => {
-        console.log(response.data)
         setListMembers(response.data)
       })
       .catch(error => {

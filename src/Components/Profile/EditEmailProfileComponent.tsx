@@ -45,7 +45,6 @@ const EditEmailProfileComponent = (props) => {
       confirmationCode: emailCode
     })
     .then(response => {
-      console.log(response)
       setEditProfile(!editProfile)
     })
     .catch(error => {

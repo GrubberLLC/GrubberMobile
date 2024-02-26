@@ -48,7 +48,6 @@ const ProfileScreen  = () => {
 
   const getUserFavorites = (user_id: string) => {
     setFavorites([])
-    console.log(user_id)
     let url = `https://grubberapi.com/api/v1/favorites/user/${user_id}`
     axios.get(url)
       .then(response => {

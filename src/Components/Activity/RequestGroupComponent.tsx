@@ -6,8 +6,6 @@ const RequestGroupComponent = (props) => {
 
   const { member, acceptMemberRequest } = props
 
-  console.log(member)
-
   return (
     <View style={styles.profile}>
       <View style={styles.profileSections}>

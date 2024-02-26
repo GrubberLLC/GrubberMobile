@@ -108,7 +108,6 @@ const PlaceAddComment = (props) => {
   };
 
   const createNewComment = (imageUrl: string) => {
-    console.log('creating new list')
     const url = `https://grubberapi.com/api/v1/comments/`; 
     const list_data = {
       user_id: user.userId,
@@ -120,7 +119,6 @@ const PlaceAddComment = (props) => {
     }
     axios.post(url, list_data)
       .then(response => {
-        console.log(response.data.id)
         newCommentActivity(place)
       })
       .catch(error => {
@@ -129,7 +127,6 @@ const PlaceAddComment = (props) => {
   }
 
   const newCommentActivity = (place: any) => {
-    console.log('creating activty')
     let url = `https://grubberapi.com/api/v1/activity/`
     const favoritesData = {
       user_id: user.userId,

@@ -31,7 +31,6 @@ const CommentComponent = (props) => {
     const url = `https://grubberapi.com/api/v1/comments/${comment.comment_id}`
     axios.delete(url)
       .then(response => {
-        console.log(response.data)
         grabPlaceComments()
       })
       .catch(error => {

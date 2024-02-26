@@ -60,7 +60,6 @@ const AddPlaceWithinListCompoent = (props) => {
   }
 
   const addToPlaces = (place: any) => {
-    console.log('adding to place')
     let url = `https://grubberapi.com/api/v1/places/`
     const formatted_address = `${place.location.address1} ${place.location.city}, ${place.location.state} ${place.location.zip_code}`
     const placeData = {
@@ -78,10 +77,8 @@ const AddPlaceWithinListCompoent = (props) => {
       yelp_url: place.url,
       yelp_id: place.id
     }
-    console.log(placeData)
     axios.post(url, placeData)
       .then(response => {
-        console.log(response.data)
         addToList(response.data.id, place)
       })
       .catch(error => {
@@ -91,7 +88,6 @@ const AddPlaceWithinListCompoent = (props) => {
   }
 
   const addToList = (place_id: number, place: any) => {
-    console.log('add to list')
     let url = `https://grubberapi.com/api/v1/placeinlist/`
     const favoritesData = {
       place_id: place_id,
@@ -99,7 +95,6 @@ const AddPlaceWithinListCompoent = (props) => {
     }
     axios.post(url, favoritesData)
       .then(response => {
-        console.log('added to favorite: ', response.data)
         addNewActivity(response.data.id, place)
       })
       .catch(error => {
@@ -109,8 +104,6 @@ const AddPlaceWithinListCompoent = (props) => {
   }
 
   const addNewActivity = (favorite_id: number, place: any) => {
-    console.log('creating activty')
-    console.log(place)
     let url = `https://grubberapi.com/api/v1/activity/`
     const favoritesData = {
       user_id: user.userId,
@@ -124,7 +117,6 @@ const AddPlaceWithinListCompoent = (props) => {
     }
     axios.post(url, favoritesData)
       .then(response => {
-        console.log('activity response: ', response.data)
         getListPlaces(list.list_id)
         setViewAddList(!viewAddList)
       })

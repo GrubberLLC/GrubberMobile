@@ -50,7 +50,6 @@ const AddMemberComponent = (props) => {
     }
     axios.post(url, memberObject)
       .then(response => {
-        console.log('new member request sent')
         getAllListMembers()
         setViewAddList(!viewAddList)
       })

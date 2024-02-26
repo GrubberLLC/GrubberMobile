@@ -21,7 +21,6 @@ const ConfirmEmailScreen = ({route}) => {
         confirmationCode: confirmationCode
     })
     .then(response => {
-      console.log(response)
       setConfirmationCode('')
       autoSignIn()
       navigation.navigate('LoginScreen');
@@ -36,7 +35,6 @@ const ConfirmEmailScreen = ({route}) => {
       username: username
     })
     .then(response => {
-      console.log(response)
     })
     .catch(error => {
         console.log('Error confirming sign up', error);

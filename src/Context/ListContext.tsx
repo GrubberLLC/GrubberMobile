@@ -21,7 +21,6 @@ export const ListContextProvider = ({ children }) => {
   };
 
   const getListPlaces = (list_id: string) => {
-    console.log('axios: ', list_id)
     const url = `https://grubberapi.com/api/v1/placeinlist/list/${list_id}`
     axios.get(url)
       .then(response => {

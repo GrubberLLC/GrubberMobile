@@ -84,11 +84,9 @@ const ListDetailsPage = ({route}) => {
     const url = `https://grubberapi.com/api/v1/members/${memberRecord.member_id}`
     axios.delete(url)
       .then(response => {
-        console.log(response.data)
         const deleteUrl = `https://grubberapi.com/api/v1/lists/${list.list_id}`
         axios.delete(deleteUrl)
           .then(response => {
-            console.log(response.data)
             navigation.navigate('AllListsScreens')
           })
           .catch(error => {

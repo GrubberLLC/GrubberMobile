@@ -53,7 +53,6 @@ const ActivityScreen = () => {
 
   const searchForusers = (text: string) => {
     const url = `https://grubberapi.com/api/v1/profiles/search/${text}`
-    console.log(url)
     axios.get(url)
       .then(response => {
         setSearchResults(response.data)
@@ -65,7 +64,6 @@ const ActivityScreen = () => {
   }
 
   const sendFriendRequest = (person: any) => {
-    console.log(person)
     const url = `https://grubberapi.com/api/v1/friends/`
     const friendData = {
       follower_id: user.userId,
@@ -74,7 +72,6 @@ const ActivityScreen = () => {
     }
     axios.post(url, friendData)
       .then(response => {
-        console.log(response.data)
         if(person.public){
           createNewActivity(profile, person.username, response.data.id)
         } else {
@@ -126,7 +123,6 @@ const ActivityScreen = () => {
   }
 
   const acceptFriendRequest = (member: any) => {
-    console.log(JSON.stringify(member))
     const url = `https://grubberapi.com/api/v1/friends/accept/${member.friend_id}`
     axios.put(url)
       .then(response => {
@@ -140,7 +136,6 @@ const ActivityScreen = () => {
 
   const grabFollowing = () => {
     const url = `https://grubberapi.com/api/v1/friends/follower/${user.userId}`
-    console.log(url)
     axios.get(url)
       .then(response => {
         setFollowing(response.data)
@@ -155,7 +150,6 @@ const ActivityScreen = () => {
     const url = `https://grubberapi.com/api/v1/friends/following/${user.userId}`
     axios.get(url)
       .then(response => {
-        console.log(response.data)
         setFollowRequest(response.data)
       })
       .catch(error => {
@@ -173,7 +167,6 @@ const ActivityScreen = () => {
     const url = `https://grubberapi.com/api/v1/activity/user/${user.userId}`
     axios.get(url)
       .then(response => {
-        console.log(response.data)
         setActivities(response.data)
       })
       .catch(error => {
@@ -227,7 +220,6 @@ const ActivityScreen = () => {
                   {
                     searchResults.map((profile) => {
                       const followStatus = getFollowStatus(profile.user_id);
-                      console.log(user.userId)
                       return(
                         <TouchableOpacity onPress={() => {navigation.navigate('UserProfileScreen', {profile: profile})}} style={styles.profile}>
                           <View style={styles.profileSection}>
@@ -306,7 +298,6 @@ const ActivityScreen = () => {
                       {
                         members.map((member) => {
                           if(member.type === 'pending'){
-                            console.log(member)
                             return(
                               <View>
                                 <RequestGroupComponent member={member} acceptMemberRequest={acceptMemberRequest}/>

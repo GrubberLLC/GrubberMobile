@@ -119,7 +119,6 @@ const CreateListComponent = (props) => {
   };
 
   const createNewList = (imageUrl: string) => {
-    console.log('creating new list')
     const url = `https://grubberapi.com/api/v1/lists/`; 
     const memberUrl = `https://grubberapi.com/api/v1/members/`; 
     const activityUrl = `https://grubberapi.com/api/v1/activity/`; 
@@ -133,7 +132,6 @@ const CreateListComponent = (props) => {
     }
     axios.post(url, list_data)
       .then(listResponse => {
-        console.log('adding ne wmember')
         const memberData = {
           user_id: user.userId,
           status: 'Owner',
@@ -142,8 +140,6 @@ const CreateListComponent = (props) => {
         }
         axios.post(memberUrl, memberData)
           .then(memberResponse => {
-            console.log('adding activity')
-            console.log(listResponse.data.insertId)
             const activityData = {
               user_id: user.userId,
               activity: `${user.username} created a new list (${name})`,

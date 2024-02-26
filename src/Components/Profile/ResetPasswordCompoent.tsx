@@ -57,7 +57,6 @@ const ResetPasswordCompoent = (props) => {
     validPassword && matchingPassword
       ? updatePassword({ oldPassword: confirmationCode, newPassword: newPassword })
         .then(() => {
-          console.log('Password updated successfully.');
           setEditProfile(!editProfile)
         })
         .catch(err => {

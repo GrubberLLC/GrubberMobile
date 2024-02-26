@@ -82,10 +82,8 @@ const SignupScreen = () => {
 
   const validateEmail = (email: string) => {
     const url = `https://grubberapi.com/api/v1/profiles/email/${email}`
-    console.log(url)
     axios.get(url)
       .then(response => {
-        console.log(response.data)
         response.data.length > 0
           ? setAvailableEmail(false)
           : setAvailableEmail(true)

@@ -67,7 +67,6 @@ const EditProfileComponent = (props) => {
     }
     axios.put(url, profileData)
       .then(response => {
-        console.log('Profile created successfully:', response.data);
         getUserProfile(user.userId)
         setEditProfile(!editProfile)
         setLoading(false)
@@ -114,7 +113,6 @@ const EditProfileComponent = (props) => {
       } else if (response.errorCode) {
         console.log('ImagePicker Error: ', response.errorMessage);
       } else {
-        console.log(response.assets[0])
         const source = { uri: response.assets[0].uri, fileName: response.assets[0].fileName, type: response.assets[0].type, baseImage: response.assets[0].base64 };
         setPicture(source);
       }
@@ -149,10 +147,7 @@ const EditProfileComponent = (props) => {
                 accessLevel: 'guest',
             }
         }).result;
-        
-        console.log('Succeeded:', result);
         let uploadedImage = `https://seekify-storage-da999112230453-staging.s3.us-west-1.amazonaws.com/public/${result.key}`
-        console.log(uploadedImage)
         updateProfile(uploadedImage)
 
     } catch (error) {

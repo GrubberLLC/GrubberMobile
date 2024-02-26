@@ -9,7 +9,6 @@ const UserListComponent = (props) => {
   const {  setFunction, view, tab, list, getFriends } = props
 
   const removeFriends = (friend_id: number) => {
-    console.log(friend_id)
     const url = `https://grubberapi.com/api/v1/friends/${friend_id}`
     axios.delete(url)
       .then(response => {

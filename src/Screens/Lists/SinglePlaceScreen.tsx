@@ -68,7 +68,6 @@ const SinglePlaceScreen = ({route}) => {
     const url = `https://grubberapi.com/api/v1/comments/pl/${place.pl_id}`
     axios.get(url)
       .then(response => {
-        console.log(response.data)
         setComments(response.data)
       })
       .catch(error => {
@@ -76,8 +75,6 @@ const SinglePlaceScreen = ({route}) => {
         throw error;
       });
   }
-
-  console.log(place.yelp_url)
 
   return (
     <View style={styles.container}>

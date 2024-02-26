@@ -27,7 +27,6 @@ export const UserContextProvider = ({ children }) => {
 
       appState.current = nextAppState;
       setAppStateVisible(appState.current);
-      console.log('AppState', appState.current);
     });
 
     return () => {
@@ -44,7 +43,6 @@ export const UserContextProvider = ({ children }) => {
       await getUserProfile(currentUser.userId); // Assuming getUserProfile returns a promise
       return currentUser; // Optionally return user or some indication of success
     } catch (err) {
-      console.log('User is not logged in:', err);
       throw err; // Rethrow or handle error as needed
     }
   };
@@ -53,7 +51,6 @@ export const UserContextProvider = ({ children }) => {
     setLoadingLogin(true)
     signIn({username, password})
       .then((response) => {
-        console.log(response)
         grabUser()
       })
       .catch((error) => {
@@ -67,17 +64,13 @@ export const UserContextProvider = ({ children }) => {
     updateLogoutStatus(user_id)
     signOut()
       .then(response => {
-        console.log('logged out')
         setUser(null)
       })
       .catch(response => {
-        console.log(response)
       })
   }
 
   const getUserProfile = (user_id: string) => {
-    // console.log(user_id)
-    console.log(`Base URL: ${BASE_URL}`);
     let url = `https://grubberapi.com/api/v1/profiles/${user_id}`
     axios.get(url)
       .then(response => {
@@ -96,7 +89,6 @@ export const UserContextProvider = ({ children }) => {
     }
     axios.put(url, body)
       .then(response => {
-        console.log(response.data)
       })
       .catch(error => {
         console.error('Error fetching profile:', error);
@@ -111,7 +103,6 @@ export const UserContextProvider = ({ children }) => {
     }
     axios.put(url, body)
       .then(response => {
-        console.log(response.data)
       })
       .catch(error => {
         console.error('Error fetching profile:', error);
@@ -124,7 +115,6 @@ export const UserContextProvider = ({ children }) => {
     let url = `https://grubberapi.com/api/v1/favorites/user/${user_id}`
     axios.get(url)
       .then(response => {
-        console.log(response.data)
         setFavorites(response.data)
       })
       .catch(error => {

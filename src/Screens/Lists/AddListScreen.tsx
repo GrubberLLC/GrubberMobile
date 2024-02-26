@@ -32,7 +32,6 @@ const AddListScreen = () => {
 
   const createList = () => {
     const url = `https://grubberapi.com/api/v1/lists/`; 
-    console.log(profile)
     const listData = {
       name: name,
       description: description,
