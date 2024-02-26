@@ -1,118 +1,118 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import { ActivityIndicator, Image, SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { Amplify } from 'aws-amplify';
+import amplifyconfig from './src/amplifyconfiguration.json';
+import { UserContext, UserContextProvider } from './src/Context/UserContext';
+import BottomTabNavigation from './src/Navigation/BottomTabNavigation';
+import { ListContextProvider } from './src/Context/ListContext';
+import { useContext, useEffect, useState } from 'react';
+import imageSrc from './src/Assets/restaurant4.jpg'
+import AuthenticationStackNavigation from './src/Navigation/AuthenticationStackNavigation';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+Amplify.configure(amplifyconfig);
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+const AuthenticatedApp = () => {
+  const { user, grabUser } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(true); // Add a loading state
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  useEffect(() => {
+    grabUser().finally(() => setIsLoading(false)); // Update loading state after checking user
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator style={{marginTop: 24}} size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View style={styles.container}>
+      {user != null ? (
+        <View style={styles.containerTab}>
+          <StatusBar barStyle="light-content" translucent={false} backgroundColor={'black'} />
+          <SafeAreaView style={styles.container}>
+            <BottomTabNavigation />
+          </SafeAreaView>
+        </View>
+      ) : (
+        <View style={styles.container}>
+          <Image style={styles.backgroundImage} source={imageSrc} />
+          <View style={styles.backgroundOverlay} />
+          <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+          <View style={styles.subContainer}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
+              <AuthenticationStackNavigation />
+            </SafeAreaView>
+          </View>
+        </View>
+      )}
     </View>
   );
-}
+};
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+export default function App() {
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <UserContextProvider>
+      <ListContextProvider>
+        <AuthenticatedApp />
+      </ListContextProvider>
+    </UserContextProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  container: {
+    flex: 1,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  containerTab: {
+    flex: 1,
+    backgroundColor: 'black'
   },
-  highlight: {
-    fontWeight: '700',
+  backgroundContainer: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: -1, 
+    position: 'absolute'
   },
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '120%',
+    position: 'absolute'
+  },
+  backgroundOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)', 
+    zIndex: 0, 
+    position: 'absolute'
+  },
+  subContainer: {
+    zIndex: 1,
+    flex: 1,
+  },
+  safecontainer: {
+    flex: 1,
+  },
+  spash: {
+    flex: 1,
+    backgroundColor: 'white',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  imageContiainer: {
+    height: 100,
+    width: 100
+  },
+  mainImage: {
+    height: 100,
+    width: 100
+  }
 });
-
-export default App;

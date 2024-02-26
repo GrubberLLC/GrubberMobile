@@ -1,0 +1,14 @@
+{
+  "resourceName": "s3seekifystorageda999112",
+  "bucketName": "seekify-storage-da999112",
+  "policyUUID": "afbcf505",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}
