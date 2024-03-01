@@ -86,9 +86,10 @@ const ActivityScreen = () => {
   }
 
   const grabGroupRequests = () => {
-    const url = `https://grubberapi.com/api/v1/members/${user.userId}`
+    const url = `https://grubberapi.com/api/v1/members/list/pending/${user.userId}`
     axios.get(url)
       .then(response => {
+        console.log(response.data)
         setMembers(response.data)
       })
       .catch(error => {
