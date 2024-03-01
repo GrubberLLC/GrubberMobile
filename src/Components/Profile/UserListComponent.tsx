@@ -3,10 +3,12 @@ import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, ScrollVi
 import { X } from 'react-native-feather'
 import { BASE_URL } from '@env';
 import axios from 'axios'
+import { useNavigation } from '@react-navigation/native';
 
 
 const UserListComponent = (props) => {
   const {  setFunction, view, tab, list, getFriends } = props
+  const navigation = useNavigation()
 
   const removeFriends = (friend_id: number) => {
     const url = `https://grubberapi.com/api/v1/friends/${friend_id}`
@@ -18,6 +20,11 @@ const UserListComponent = (props) => {
         console.error('Error fetching user lists:', error);
         throw error;
       });
+  }
+
+  const handleShowProfile = (profile: any) => {
+    setFunction(!View)
+    navigation.navigate('UserProfileScreen', {profile: profile})
   }
 
   return (
@@ -37,7 +44,7 @@ const UserListComponent = (props) => {
                   {
                     list.map((profile) => {
                       return(
-                        <View style={styles.profile}>
+                        <TouchableOpacity onPress={() => {handleShowProfile(profile)}} style={styles.profile}>
                           <View style={styles.profileSections}>
                             <View style={styles.profilePicture}>
                               <Image style={styles.profilePicture} source={{uri: profile.profile_picture}}/>
@@ -54,7 +61,7 @@ const UserListComponent = (props) => {
                               </Text>
                             </TouchableOpacity>
                           </View>
-                        </View>
+                        </TouchableOpacity>
                       )
                     })
                   }
