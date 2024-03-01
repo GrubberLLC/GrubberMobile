@@ -5,7 +5,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import axios from 'axios' 
 import { BASE_URL } from '@env';
 import { UserContext } from '../../Context/UserContext';
-import { Check, X } from 'react-native-feather';
+import { Check, RefreshCw, X } from 'react-native-feather';
 import RequestGroupComponent from '../../Components/Activity/RequestGroupComponent';
 import InputFieldComponent from '../../Components/General/InputFieldComponent';
 import FriendRequestComponent from '../../Components/Activity/FriendRequestComponent';
@@ -29,11 +29,14 @@ const ActivityScreen = () => {
 
   const [viewActivity, setViewActivity] = useState('personal')
   const [activities, setActivities] = useState([])
+  const [followingActivities, setFollowingActivities] = useState([])
 
   useEffect(() => {
     grabGroupRequests()
     grabFollowing()
     grabFriendRequests()
+    grabuserActivity()
+    grabFollowingctivity()
   }, [])
 
   useFocusEffect(
@@ -42,6 +45,8 @@ const ActivityScreen = () => {
         grabGroupRequests()
         grabFollowing()
         grabFriendRequests()
+        grabuserActivity()
+        grabFollowingctivity()
       }
     }, [navigation])
   );
@@ -89,7 +94,6 @@ const ActivityScreen = () => {
     const url = `https://grubberapi.com/api/v1/members/list/pending/${user.userId}`
     axios.get(url)
       .then(response => {
-        console.log(response.data)
         setMembers(response.data)
       })
       .catch(error => {
@@ -168,7 +172,21 @@ const ActivityScreen = () => {
     const url = `https://grubberapi.com/api/v1/activity/user/${user.userId}`
     axios.get(url)
       .then(response => {
+        console.log(response.data.length)
         setActivities(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching user lists:', error);
+        throw error;
+      });
+  }
+
+  const grabFollowingctivity = () => {
+    const url = `https://grubberapi.com/api/v1/activity/following/${user.userId}`
+    axios.get(url)
+      .then(response => {
+        console.log(response.data.length)
+        setFollowingActivities(response.data)
       })
       .catch(error => {
         console.error('Error fetching user lists:', error);
@@ -199,6 +217,16 @@ const ActivityScreen = () => {
       });
   }
 
+  const refreshActivityRequests = () => {
+    grabuserActivity()
+    grabFollowingctivity()
+  }
+
+  const clearSearch = () => {
+    setSearchUser('')
+    setSearchResults([])
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -208,16 +236,25 @@ const ActivityScreen = () => {
       </View>
       <View style={styles.contentContainer}>
         <View style={styles.inputHeader}>
-          <InputFieldComponent 
-            label='Search'
-            value={searchUser}
-            handleFunction={updateSearchUser}
-            secure={false}
-            palceholder={'search username...'}
-          />
+          <View style={styles.searchBar}>
+            <View style={styles.searchInputContainer}>
+              <InputFieldComponent 
+                label='Search'
+                value={searchUser}
+                handleFunction={updateSearchUser}
+                secure={false}
+                palceholder={'search username...'}
+              />
+            </View>
+            {
+              searchResults.length > 0
+                ? <X onPress={() => {clearSearch()}} style={styles.clear} height={32} width={32} color={'#e94f4e'}/>
+                : null
+            }
+          </View>
           {
             searchResults.length > 0
-              ? <ScrollView style={styles.scroll}>
+              ? <View style={styles.searchingContainer}><ScrollView style={styles.scroll}>
                   {
                     searchResults.map((profile) => {
                       const followStatus = getFollowStatus(profile.user_id);
@@ -232,11 +269,6 @@ const ActivityScreen = () => {
                             <Text style={styles.username}>{profile.username}</Text>
                             <Text style={styles.profilename}>{profile.full_name}</Text>
                           </View>
-                          {/* {!alreadyAMember && (
-                            <TouchableOpacity style={styles.removeContainer}>
-                              <Text style={styles.remove}>Add</Text>
-                            </TouchableOpacity>
-                          )} */}
                           {
                             profile.user_id === user.userId ? null : (
                               followStatus === "pending" 
@@ -256,12 +288,13 @@ const ActivityScreen = () => {
                       )
                     })
                   }
-                </ScrollView>
+                </ScrollView></View>
               : null
           }
         </View>
         <View style={styles.subHeader}>
           <Text style={styles.subHeaderText}>Requests</Text>
+          <RefreshCw height={22} width={22} color={'#e94f4e'}/>
         </View>
         {
           viewRequeset === 'friends'
@@ -313,19 +346,10 @@ const ActivityScreen = () => {
         </View>
         <View style={styles.subHeader}>
           <Text style={styles.subHeaderText}>Recent Activity</Text>
+          <TouchableOpacity onPress={() => {refreshActivityRequests()}}>
+            <RefreshCw height={22} width={22} color={'#e94f4e'}/>
+          </TouchableOpacity>
         </View>
-        {
-          viewActivity === 'all'
-            ? <View style={styles.requestContainer}>
-                <TouchableOpacity onPress={() => {setViewActivity('personal')}}>
-                  <Text style={styles.requestTab}>Yours</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => {setViewActivity('following')}}>
-                  <Text style={styles.requestTab}>Following</Text>
-                </TouchableOpacity>
-              </View>
-            : null
-        }
         {
           viewActivity === 'personal'
             ? <View style={styles.requestContainer}>
@@ -360,7 +384,17 @@ const ActivityScreen = () => {
                       }
                     </ScrollView>
                   : null
-              : null
+              : followingActivities.length > 0
+                  ? <ScrollView style={styles.activityScroll}>
+                      {
+                        followingActivities.map(activity => {
+                          return(
+                            <View><ActivtyComponent activity={activity}/></View>
+                          )
+                        })
+                      }
+                    </ScrollView>
+                  : null
           }
         </View>
       </View>
@@ -380,6 +414,26 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 18,
     paddingBottom: 4
+  },
+  subHeader: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  searchInputContainer: {
+    flex: 1
+  },
+  searchBar: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  clear: {
+    marginLeft: 8,
+    fontWeight: 'bold'
   },
   title: {
     flex: 1,
@@ -408,10 +462,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 22
   },
+  searchingContainer: {
+    height: '100%'
+  },
   scroll: {
     marginTop: 12,
     width: '100%',
-    maxHeight: 300,
+    maxHeight: '100%',
     backgroundColor: 'white',
     borderRadius: 8
   },

@@ -53,11 +53,18 @@ const AllListsScreens = () => {
       </Modal>
       {userLists.length > 0 ? (
         <ScrollView style={styles.contentContainer}>
-          {userLists.map((item) => (
-            <View style={styles.scrollItem} key={item.list_id}>
-              <ListPlaceTileComponent item={item}/>
-            </View>
-          ))}
+          {
+            userLists.map((item) => {
+              console.log(item.type)
+              if(item.type === 'active'){
+                return(
+                  <View style={styles.scrollItem} key={item.list_id}>
+                    <ListPlaceTileComponent item={item}/>
+                  </View>
+                )
+              }
+            })
+          }
         </ScrollView>
       ) : (
         <View style={styles.noLocationContainer}>

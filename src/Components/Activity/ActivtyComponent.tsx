@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
+import { UserContext } from '../../Context/UserContext'
 
 const ActivtyComponent = (props) => {
 
   const { activity } = props
+
+  const { user } = useContext(UserContext)
 
   function convertDateToDaysOrHours(dateString: string) {
     const inputDate = new Date(dateString);
@@ -19,6 +22,10 @@ const ActivtyComponent = (props) => {
     }
   }
 
+  const replaceNameWithPronoun = (str: string) => {
+    return str.replace(user.username, 'You')
+  }
+
   return (
     <View style={styles.profile}>
       <View style={styles.profileSections}>
@@ -27,7 +34,7 @@ const ActivtyComponent = (props) => {
         </View>
       </View>
       <View style={styles.profileNames}>
-        <Text style={styles.username}>{activity.activity}</Text>
+        <Text style={styles.username}>{replaceNameWithPronoun(activity.activity)}</Text>
         <Text style={styles.profilename}>{convertDateToDaysOrHours(activity.created_at)}</Text>
       </View>
     </View>
@@ -49,7 +56,7 @@ const styles = StyleSheet.create({
     height: 45,
     width: 45,
     borderRadius: 30,
-    backgroundColor:'#e94f4e',
+    backgroundColor:'lightgrey',
     marginRight: 12,
     overflow: 'hidden'
   },
