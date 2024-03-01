@@ -46,7 +46,7 @@ const AddListScreen = () => {
           user_id: profile.user_id,
           list_id: response.data.insertId,
           status: 'owner',
-          type: null
+          type: 'active'
         }
         createMember(memberData)
         navigation.navigate('AllListsScreens')

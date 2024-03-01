@@ -7,6 +7,7 @@ import ProfileStackNavigation from './ProfileStackNavigation';
 import ActivityStackNavigation from './ActivityStackNavigation';
 import SearchStackNavigation from './SearchStackNavigation';
 import FavoritesStackNavigation from './FavoritesStackNavigation';
+import { View } from 'react-native';
 
 const Tab = createBottomTabNavigator()
 
@@ -30,7 +31,21 @@ const BottomTabNavigation = () => {
           options={{
             tabBarShowLabel: false,
             // eslint-disable-next-line react/no-unstable-nested-components
-            tabBarIcon: ({size, color}) => (<List stroke={'white'} height={22} width={22} />),
+            tabBarIcon: ({ focused, color, size }) => (
+              <View style={{ width: 22, height: 22, alignItems: 'center' }}>
+                {
+                  focused 
+                    ? <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{width: '100%', height: 3, backgroundColor: '#e94f4e', position: 'absolute', top: 0}}></View>
+                        <List style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                      </View>
+                    : <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{width: '100%', height: 3, backgroundColor: 'black', position: 'absolute', top: 0}}></View>
+                        <List style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                      </View>
+                }
+              </View>
+            ),
           }}
         />
         <Tab.Screen
@@ -40,7 +55,21 @@ const BottomTabNavigation = () => {
           options={{
             tabBarShowLabel: false,
             // eslint-disable-next-line react/no-unstable-nested-components
-            tabBarIcon: ({size, color}) => (<Search stroke={'white'} height={22} width={22} />),
+            tabBarIcon: ({ focused, color, size }) => (
+              <View style={{ width: 22, height: 22, alignItems: 'center' }}>
+                {
+                  focused 
+                    ? <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{width: '100%', height: 3, backgroundColor: '#e94f4e', position: 'absolute', top: 0}}></View>
+                        <Search style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                      </View>
+                    : <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{width: '100%', height: 3, backgroundColor: 'black', position: 'absolute', top: 0}}></View>
+                        <Search style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                      </View>
+                }
+              </View>
+            ),
           }}/>
         <Tab.Screen
           name="Activity"
@@ -49,7 +78,21 @@ const BottomTabNavigation = () => {
           options={{
             tabBarShowLabel: false,
             // eslint-disable-next-line react/no-unstable-nested-components
-            tabBarIcon: ({size, color}) => (<Activity stroke={'white'} height={22} width={22} />),
+            tabBarIcon: ({ focused, color, size }) => (
+              <View style={{ width: 22, height: 22, alignItems: 'center' }}>
+                {
+                  focused 
+                    ? <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{width: '100%', height: 3, backgroundColor: '#e94f4e', position: 'absolute', top: 0}}></View>
+                        <Activity style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                      </View>
+                    : <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{width: '100%', height: 3, backgroundColor: 'black', position: 'absolute', top: 0}}></View>
+                        <Activity style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                      </View>
+                }
+              </View>
+            ),
           }}/>
         <Tab.Screen
           name="Favorites"
@@ -58,7 +101,21 @@ const BottomTabNavigation = () => {
           options={{
             tabBarShowLabel: false,
             // eslint-disable-next-line react/no-unstable-nested-components
-            tabBarIcon: ({size, color}) => (<Heart stroke={'white'} height={22} width={22} />),
+            tabBarIcon: ({ focused, color, size }) => (
+              <View style={{ width: 22, height: 22, alignItems: 'center' }}>
+                {
+                  focused 
+                    ? <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{width: '100%', height: 3, backgroundColor: '#e94f4e', position: 'absolute', top: 0}}></View>
+                        <Heart style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                      </View>
+                    : <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{width: '100%', height: 3, backgroundColor: 'black', position: 'absolute', top: 0}}></View>
+                        <Heart style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                      </View>
+                }
+              </View>
+            ),
           }}/>
         <Tab.Screen
           name="Profile"
@@ -67,11 +124,37 @@ const BottomTabNavigation = () => {
           options={{
             tabBarShowLabel: false,
             // eslint-disable-next-line react/no-unstable-nested-components
-            tabBarIcon: ({size, color}) => (<User stroke={'white'} height={22} width={22} />),
+            tabBarIcon: ({ focused, color, size }) => (
+              <View style={{ width: 22, height: 22, alignItems: 'center' }}>
+                {
+                  focused 
+                    ? <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{width: '100%', height: 3, backgroundColor: '#e94f4e', position: 'absolute', top: 0}}></View>
+                        <User style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                      </View>
+                    : <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{width: '100%', height: 3, backgroundColor: 'black', position: 'absolute', top: 0}}></View>
+                        <User style={{marginTop: 12}} stroke={'white'} height={20} width={20} strokeWidth={3}/>
+                      </View>
+                }
+              </View>
+            ),
           }}/> 
       </Tab.Navigator>
     </NavigationContainer>
   )
 }
+
+// {
+//   focused 
+//     ? <View>
+//         <View style={{width: '100%', height: 2, backgroundColor: '#e94f4e', marginBottom: 6}}></View>
+//         <List stroke={color} height={size} width={size} strokeWidth={3}/>
+//       </View>
+//     : <View>
+//         <View style={{width: '100%', height: 2, backgroundColor: 'red'}}></View>
+//         <List stroke={color} height={size} width={size}/>
+//       </View>
+// }
 
 export default BottomTabNavigation
