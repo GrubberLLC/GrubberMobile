@@ -172,7 +172,6 @@ const ActivityScreen = () => {
     const url = `https://grubberapi.com/api/v1/activity/user/${user.userId}`
     axios.get(url)
       .then(response => {
-        console.log(response.data.length)
         setActivities(response.data)
       })
       .catch(error => {
@@ -185,7 +184,6 @@ const ActivityScreen = () => {
     const url = `https://grubberapi.com/api/v1/activity/following/${user.userId}`
     axios.get(url)
       .then(response => {
-        console.log(response.data.length)
         setFollowingActivities(response.data)
       })
       .catch(error => {
@@ -259,7 +257,7 @@ const ActivityScreen = () => {
                     searchResults.map((profile) => {
                       const followStatus = getFollowStatus(profile.user_id);
                       return(
-                        <TouchableOpacity onPress={() => {navigation.navigate('UserProfileScreen', {profile: profile})}} style={styles.profile}>
+                        <TouchableOpacity onPress={() => {navigation.navigate('ActivityUserProfileScreen', {profile: profile})}} style={styles.profile}>
                           <View style={styles.profileSection}>
                             <View style={styles.profilePicture}>
                               <Image style={styles.profilePicture} source={{uri: profile.profile_picture}}/>

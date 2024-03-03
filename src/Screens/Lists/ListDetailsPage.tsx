@@ -169,7 +169,9 @@ const ListDetailsPage = ({route}) => {
                     return(
                       <TouchableOpacity onPress={() => {navigation.navigate('UserProfileScreen', {profile: member})}} style={styles.profile}>
                         <View style={styles.profileSection}>
-                          <View style={styles.profilePicture}></View>
+                          <View style={styles.profilePicture}>
+                            <Image style={styles.profilePicture} source={{uri: member.profile_picture}} />
+                          </View>
                         </View>
                         <View style={styles.profileNames}>
                           {
@@ -352,7 +354,6 @@ const styles = StyleSheet.create({
     height: 45,
     width: 45,
     borderRadius: 30,
-    backgroundColor:'#e94f4e',
     marginRight: 12,
     overflow: 'hidden'
   },

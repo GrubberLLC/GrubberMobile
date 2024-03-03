@@ -8,10 +8,10 @@ import { UserContext } from '../../Context/UserContext';
 import { ChevronsLeft, MapPin } from 'react-native-feather';
 import ListPlaceTileComponent from '../../Components/Lists/ListPlaceTileComponent';
 import ProfileFavoritesTile from '../../Components/Profile/ProfileFavoritesTile';
-import ProfileListPlaceTileComponent from '../../Components/Profile/ProfileListPlaceTileComponent';
+import ActivityListPlaceTileComponent from '../../Components/Activity/ActivityListPlaceTileComponent';
 
 
-const UserProfileScreen  = ({route}) => {
+const ActivityUserProfileScreen  = ({route}) => {
   const {profile} = route.params
   const navigation = useNavigation()
 
@@ -241,7 +241,7 @@ const UserProfileScreen  = ({route}) => {
                             ? lists.map((list) => {
                                 return(
                                   <View>
-                                    <ProfileListPlaceTileComponent item={list}/>
+                                    <ListPlaceTileComponent item={list}/>
                                   </View>
                                 )
                               })
@@ -293,7 +293,7 @@ const UserProfileScreen  = ({route}) => {
                                     ? lists.map((list) => {
                                         return(
                                           <View>
-                                            <ProfileListPlaceTileComponent item={list}/>
+                                            <ListPlaceTileComponent item={list}/>
                                           </View>
                                         )
                                       })
@@ -342,7 +342,7 @@ const UserProfileScreen  = ({route}) => {
                                 ? lists.map((list) => {
                                     return(
                                       <View>
-                                        <ProfileListPlaceTileComponent item={list}/>
+                                        <ActivityListPlaceTileComponent item={list}/>
                                       </View>
                                     )
                                   })
@@ -545,4 +545,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default UserProfileScreen
+export default ActivityUserProfileScreen

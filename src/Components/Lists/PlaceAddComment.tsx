@@ -81,37 +81,40 @@ const PlaceAddComment = (props) => {
 
   const uploadImage = async () => {
     setLoading(true)
-    try {
-        const blob = await getBlob(); // Wait for the blob to be fetched
-        // Assuming listImage.fileName and listImage.type are available
-        const fileName = commentImage.fileName;
-        const fileType = commentImage.type;
-        const folderName = "ListImages";
-
-        const fileKey = `${folderName}/${fileName}`;
-
-        // Wait for the uploadData function to complete
-        const result = await uploadData({
-            key: fileKey,
-            data: blob,
-            options: {
-                accessLevel: 'guest',
-            }
-        }).result;
-    
-        let uploadedImage = `https://seekify-storage-da999112230453-staging.s3.us-west-1.amazonaws.com/public/${result.key}`
-        createNewComment(uploadedImage)
-
-    } catch (error) {
-        console.log('Error:', error);
+    console.log(commentImage === null)
+    if(commentImage != null){
+      try {
+          const blob = await getBlob(); 
+          const fileName = commentImage.fileName;
+          const fileType = commentImage.type;
+          const folderName = "ListImages";
+  
+          const fileKey = `${folderName}/${fileName}`;
+  
+          const result = await uploadData({
+              key: fileKey,
+              data: blob,
+              options: {
+                  accessLevel: 'guest',
+              }
+          }).result;
+      
+          let uploadedImage = `https://seekify-storage-da999112230453-staging.s3.us-west-1.amazonaws.com/public/${result.key}`
+          createNewComment(uploadedImage)
+  
+      } catch (error) {
+          console.log('Error:', error);
+      }
+    } else {
+      createNewComment(null)
     }
   };
 
-  const createNewComment = (imageUrl: string) => {
+  const createNewComment = (imageUrl: string | null) => {
     const url = `https://grubberapi.com/api/v1/comments/`; 
     const list_data = {
       user_id: user.userId,
-      image: commentImage === null ? null : imageUrl,
+      image: imageUrl,
       comment: name,
       rating: null,
       place_favorites_id: null,
