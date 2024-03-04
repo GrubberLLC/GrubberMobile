@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, ActivityIndicator } from 'react-native'
 import { Plus, RefreshCcw, X } from 'react-native-feather'
 import InputFieldComponent from '../General/InputFieldComponent'
@@ -12,7 +12,7 @@ import { UserContext } from '../../Context/UserContext'
 import { ListContext } from '../../Context/ListContext'
 
 
-const PlaceAddComment = (props) => {
+const SearchPlaceAddCommentComponent = (props) => {
   const { place, setAddComment, addComment, grabPlaceComments } = props
 
   const { user } = useContext(UserContext)
@@ -22,6 +22,10 @@ const PlaceAddComment = (props) => {
   const [commentImage, setCommentImage] = useState(null)
   const [loading, setLoading] = useState(false)
 
+
+  useEffect(() => {
+    console.log('palce: ', place)
+  }, [])
 
   const handleNameChange = (text: string) => {
     setName(text)
@@ -117,9 +121,10 @@ const PlaceAddComment = (props) => {
       image: imageUrl,
       comment: name,
       rating: null,
-      place_id: null,
+      place_id: place.id,
       place_list_id: null
     }
+    console.log(list_data)
     axios.post(url, list_data)
       .then(response => {
         newCommentActivity(place)
@@ -138,8 +143,8 @@ const PlaceAddComment = (props) => {
       list_id: null,
       favorite_id: null,
       following_id: null,
-      comment_id: place.pl_id,
-      picture: place.picture
+      comment_id: place.id,
+      picture: place.image_url
     }
     axios.post(url, favoritesData)
       .then(response => { 
@@ -257,4 +262,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default PlaceAddComment
+export default SearchPlaceAddCommentComponent

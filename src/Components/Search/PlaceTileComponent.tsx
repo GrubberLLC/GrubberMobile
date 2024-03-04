@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Heart, MessageSquare, Plus, Star } from 'react-native-feather'
@@ -6,6 +7,7 @@ const imageWidth = Dimensions.get('window').width - 24
 
 const PlaceTileComponent = (props) => {
   const {place, toggleViewAddToList, removeFromFavorites, checkIfPlaceExists, favorites} = props
+  const navigation = useNavigation()
 
   const isFavoritePlace = (placeId: string, favorites: any) => {
     const favorite = favorites.find(fav => fav.yelp_id === placeId);
@@ -13,7 +15,7 @@ const PlaceTileComponent = (props) => {
   };
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={() => {navigation.navigate('SearchSinglePlaceScreen', {place: place})}} style={styles.container}>
       <View style={styles.imageContainer}>
         <Image style={styles.image} source={{uri: place.image_url}}/>
       </View>
@@ -52,7 +54,7 @@ const PlaceTileComponent = (props) => {
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 

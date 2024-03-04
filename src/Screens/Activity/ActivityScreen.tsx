@@ -290,58 +290,65 @@ const ActivityScreen = () => {
               : null
           }
         </View>
-        <View style={styles.subHeader}>
-          <Text style={styles.subHeaderText}>Requests</Text>
-          <RefreshCw height={22} width={22} color={'#e94f4e'}/>
-        </View>
         {
-          viewRequeset === 'friends'
-            ? <View style={styles.requestContainer}>
-                <Text style={styles.requestTabSelected}>{`Friends ${followRequest.length}`}</Text>
-                <TouchableOpacity onPress={() => {setViewRequest('groups')}}>
-                  <Text style={styles.requestTab}>{`Groups ${members.length}`}</Text>
-                </TouchableOpacity>
+          followRequest.length === 0 && members.length === 0 
+            ? null
+            : <View>
+                <View style={styles.subHeader}>
+                  <Text style={styles.subHeaderText}>Requests</Text>
+                  <RefreshCw height={22} width={22} color={'#e94f4e'}/>
+                </View>
+                {
+                  viewRequeset === 'friends'
+                    ? <View style={styles.requestContainer}>
+                        <Text style={styles.requestTabSelected}>{`Friends ${followRequest.length}`}</Text>
+                        <TouchableOpacity onPress={() => {setViewRequest('groups')}}>
+                          <Text style={styles.requestTab}>{`Groups ${members.length}`}</Text>
+                        </TouchableOpacity>
+                      </View>
+                    : <View style={styles.requestContainer}>
+                        <TouchableOpacity onPress={() => {setViewRequest('friends')}}>
+                          <Text style={styles.requestTab}>{`Friends ${followRequest.length}`}</Text>
+                        </TouchableOpacity>
+                        <Text style={styles.requestTabSelected}>{`Groups ${members.length}`}</Text>
+                      </View>
+                }
+                <View style={styles.requestContent}>
+                  {
+                    viewRequeset === 'friends'
+                      ? followRequest.length > 0 
+                          ? <ScrollView>
+                              {
+                                followRequest.map((member) => {
+                                    return(
+                                      <View>
+                                        <FriendRequestComponent member={member} rejectFriendRequest={rejectFriendRequest} acceptFriendRequest={acceptFriendRequest}/>
+                                      </View>
+                                    )
+                                })
+                              }
+                            </ScrollView>
+                          : null 
+                      : members.length > 0 
+                          ? <ScrollView>
+                              {
+                                members.map((member) => {
+                                  if(member.type === 'pending'){
+                                    return(
+                                      <View>
+                                        <RequestGroupComponent member={member} acceptMemberRequest={acceptMemberRequest}/>
+                                      </View>
+                                    )
+                                  }
+                                })
+                              }
+                            </ScrollView>
+                          : null
+                  }
+                </View>
               </View>
-            : <View style={styles.requestContainer}>
-                <TouchableOpacity onPress={() => {setViewRequest('friends')}}>
-                  <Text style={styles.requestTab}>{`Friends ${followRequest.length}`}</Text>
-                </TouchableOpacity>
-                <Text style={styles.requestTabSelected}>{`Groups ${members.length}`}</Text>
-              </View>
+            // --------------------------------------------------
         }
-        <View style={styles.requestContent}>
-          {
-            viewRequeset === 'friends'
-              ? followRequest.length > 0 
-                  ? <ScrollView>
-                      {
-                        followRequest.map((member) => {
-                            return(
-                              <View>
-                                <FriendRequestComponent member={member} rejectFriendRequest={rejectFriendRequest} acceptFriendRequest={acceptFriendRequest}/>
-                              </View>
-                            )
-                        })
-                      }
-                    </ScrollView>
-                  : null 
-              : members.length > 0 
-                  ? <ScrollView>
-                      {
-                        members.map((member) => {
-                          if(member.type === 'pending'){
-                            return(
-                              <View>
-                                <RequestGroupComponent member={member} acceptMemberRequest={acceptMemberRequest}/>
-                              </View>
-                            )
-                          }
-                        })
-                      }
-                    </ScrollView>
-                  : null
-          }
-        </View>
         <View style={styles.subHeader}>
           <Text style={styles.subHeaderText}>Recent Activity</Text>
           <TouchableOpacity onPress={() => {refreshActivityRequests()}}>
