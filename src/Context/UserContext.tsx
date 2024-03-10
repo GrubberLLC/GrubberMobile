@@ -39,7 +39,6 @@ export const UserContextProvider = ({ children }) => {
       const currentUser = await getCurrentUser();
       setUser(currentUser);
       updateLoginStatus(currentUser.userId)
-      setLoadingLogin(false)
       await getUserProfile(currentUser.userId); // Assuming getUserProfile returns a promise
       return currentUser; // Optionally return user or some indication of success
     } catch (err) {
@@ -75,6 +74,7 @@ export const UserContextProvider = ({ children }) => {
     axios.get(url)
       .then(response => {
         setProfile(response.data[0])
+        setLoadingLogin(false)
       })
       .catch(error => {
         console.error('Error fetching profile:', error);

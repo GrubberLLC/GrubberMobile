@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   listImage: {
     width: imageWidth,
     height: imageWidth - 140,
-    backgroundColor: 'red'
+    backgroundColor: 'lightgrey'
   },
   overlay: {
     position: 'absolute',

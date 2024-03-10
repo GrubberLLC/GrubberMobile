@@ -28,6 +28,7 @@ const AddPlaceWithinListCompoent = (props) => {
     const query = {
       term: searchTerm,
       location: searchLocation,
+      categories: 'type%3A%20restaurant',
     };
   
     try {

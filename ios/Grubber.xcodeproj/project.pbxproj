@@ -469,6 +469,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Grubber/Grubber.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6248MU8UP2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Grubber/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -497,6 +498,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Grubber/Grubber.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6248MU8UP2;
 				INFOPLIST_FILE = Grubber/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

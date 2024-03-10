@@ -2,16 +2,19 @@ import React, { useContext, useMemo } from 'react'
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Heart, MessageSquare, Plus, Star } from 'react-native-feather'
 import { UserContext } from '../../Context/UserContext'
+import { useNavigation } from '@react-navigation/native'
 
 const imageWidth = Dimensions.get('window').width - 24
 
 const FavoritePlaceTileComponent = (props) => {
   const {place, removeFromFavorites} = props
 
+  const navigation = useNavigation()
+
   const {user, getUserFavorites} = useContext(UserContext)
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={() => {navigation.navigate('FavoritesSinglePlaceScreen', {place: place})}} style={styles.container}>
       <View style={styles.imageContainer}>
         <Image style={styles.image} source={{uri: place.picture}}/>
       </View>
@@ -40,7 +43,7 @@ const FavoritePlaceTileComponent = (props) => {
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 

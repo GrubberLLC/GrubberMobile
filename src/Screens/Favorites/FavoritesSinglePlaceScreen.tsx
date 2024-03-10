@@ -9,10 +9,11 @@ import PlaceAddComment from '../../Components/Lists/PlaceAddComment'
 import CommentComponent from '../../Components/Lists/CommentComponent'
 import { Linking, Alert } from 'react-native';
 import SearchPlaceAddCommentComponent from '../../Components/Search/SearchPlaceAddCommentComponent'
+import FavoritesPlaceAddComment from '../../Components/Favorites/FavoritesPlaceAddComment'
 
 const imageWidth = Dimensions.get('window').width 
 
-const SearchSinglePlaceScreen = ({route}) => {
+const FavoritesSinglePlaceScreen = ({route}) => {
   const { place } = route.params
 
   const navigation = useNavigation()
@@ -25,8 +26,6 @@ const SearchSinglePlaceScreen = ({route}) => {
   const [addComment, setAddComment] = useState(false)
 
   useEffect(() => {
-    console.log(place)
-    grabYelpInfo(place.id)
     grabPlaceComments()
   }, [])
 
@@ -45,34 +44,12 @@ const SearchSinglePlaceScreen = ({route}) => {
     }
   };
 
-
-  const grabYelpInfo = (place_id: string) => {
-    const apiKey = YELP_API_KEY;
-    const options = {
-      method: 'GET',
-      headers: { 
-        'accept': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      url: `https://api.yelp.com/v3/businesses/${place_id}`
-    };
-    
-    axios(options)
-      .then(response => {
-        console.log(response.data)
-        setCurrentPlace(response.data)
-        setLoading(false)
-      })
-      .catch(err => {
-        console.error('yelp fusion error: ', err);
-      });
-  }
-
   const grabPlaceComments = () => {
-    const url = `https://grubberapi.com/api/v1/comments/place/${place.id}`
+    const url = `https://grubberapi.com/api/v1/comments/place/${place.yelp_id}`
     axios.get(url)
       .then(response => {
         setComments(response.data)
+        setLoading(false)
       })
       .catch(error => {
         console.error('Error fetching user lists:', error);
@@ -83,7 +60,7 @@ const SearchSinglePlaceScreen = ({route}) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{uri: place.image_url}}/>
+        <Image style={styles.image} source={{uri: place.picture}}/>
         <View style={styles.overlay}></View>
       </View>
       <View style={styles.header}>
@@ -91,7 +68,7 @@ const SearchSinglePlaceScreen = ({route}) => {
           <TouchableOpacity onPress={() => {navigation.goBack()}} style={styles.iconContainer}>
             <ChevronsLeft style={styles.icon} height={30} width={30} color={'white'}/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {openYelp(place.url)}} style={styles.iconContainerRed}>
+          <TouchableOpacity onPress={() => {openYelp(place.yelp_url)}} style={styles.iconContainerRed}>
             <Image style={styles.iconImage} source={Yelp}/>
           </TouchableOpacity>
         </View>
@@ -100,7 +77,7 @@ const SearchSinglePlaceScreen = ({route}) => {
             <Text style={styles.name}>{place.name}</Text>
           </View>
           <View style={styles.rowSB}>
-            <Text style={styles.address}>{place.location.address1}. {place.location.city}, {place.location.state} {place.location.zip_code}</Text>
+            <Text style={styles.address}>{place.address_formatted}</Text>
           </View>
           <View style={styles.rowSB}>
             <View style={styles.row}>
@@ -148,7 +125,7 @@ const SearchSinglePlaceScreen = ({route}) => {
           transparent={true}
           visible={addComment}
         >
-          <SearchPlaceAddCommentComponent grabPlaceComments={grabPlaceComments} place={place} setAddComment={setAddComment} addComment={addComment}/>
+          <FavoritesPlaceAddComment grabPlaceComments={grabPlaceComments} place={place} setAddComment={setAddComment} addComment={addComment}/>
         </Modal>
       </View>
     </View>
@@ -324,4 +301,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default SearchSinglePlaceScreen
+export default FavoritesSinglePlaceScreen
