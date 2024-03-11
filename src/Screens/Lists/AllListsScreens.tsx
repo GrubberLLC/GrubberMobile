@@ -36,12 +36,12 @@ const AllListsScreens = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.title}>
-          <Text style={styles.titleText}>Your Lists</Text>
+        <Text style={styles.headerText}>Your Lists</Text>
+        <View style={styles.headerIcons}>
+          <TouchableOpacity onPress={() => {navigation.navigate('AddPostScreen')}}>
+            <Plus height={26} width={26} color={'white'} />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => {setViewAddList(!viewAddList)}} style={styles.menuIcon}>
-          <Plus height={28} width={28} color={'white'}/>
-        </TouchableOpacity>
       </View>
       <Modal
         style={styles.modal}
@@ -77,15 +77,26 @@ const AllListsScreens = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black'
   },
   header: {
-    width: '100%',
+    backgroundColor: 'black',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 18,
-    paddingBottom: 4
+    alignItems: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+  },
+  headerText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold'
+  },
+  headerIcons: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   subHeader: {
     width: '100%',
@@ -112,10 +123,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    backgroundColor: '#ebebeb',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    marginTop: 16
+    backgroundColor: '#2c2c2c',
   },
   scrollItem: {
     paddingHorizontal: 16,

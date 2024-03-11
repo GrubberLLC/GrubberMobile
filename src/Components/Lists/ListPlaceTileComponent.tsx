@@ -51,7 +51,7 @@ const ListPlaceTileComponent = (props) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    backgroundColor: 'white',
+    backgroundColor: '#4d4d4d',
     borderRadius: 16,
     overflow: 'hidden',
     marginBottom: 12
@@ -60,14 +60,6 @@ const styles = StyleSheet.create({
     width: imageWidth,
     height: imageWidth - 140,
     backgroundColor: 'lightgrey'
-  },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: imageWidth,
-    height: imageWidth - 140,
-    backgroundColor: 'rgba(0,0,0,.6)'
   },
   info: {
     padding: 16
@@ -89,18 +81,19 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'white'
   },
   item: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#e94f4e'
+    color: 'white'
   },
   activity: {
     flex: 1,
     fontSize: 18,
     fontWeight: '600',
-    color: 'grey',
+    color: 'white',
     overflow: 'hidden'
   }
 })
