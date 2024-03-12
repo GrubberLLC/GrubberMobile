@@ -109,8 +109,6 @@ const SinglePostComponent = (props) => {
           <Heart height={24} width={24} color={hasUserLikedPost ? '#e94f4e' : 'white'} fill={hasUserLikedPost ? '#e94f4e' : 'none'}/>
         </TouchableOpacity>
         <Text style={{paddingHorizontal: 8, color: 'white', fontWeight: 'bold'}}>{postLikes.length} Likes</Text>
-        <MessageSquare height={24} width={24} color={'white'}/>
-        <Text style={{paddingHorizontal: 8, color: 'white', fontWeight: 'bold'}}>0 Comments</Text>
       </View>
       <TouchableOpacity style={styles.place}>
         <Image style={styles.placeImage} source={{uri: item.picture}}/>
