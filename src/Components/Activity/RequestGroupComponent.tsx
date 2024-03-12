@@ -34,11 +34,9 @@ const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: 'white',
+    backgroundColor: '#1c1c1c',
     alignItems: 'center',
     padding: 12,
-    borderBottomColor: 'lightgrey',
-    borderBottomWidth: 1
   },
   profilePicture: {
     height: 45,
@@ -60,10 +58,12 @@ const styles = StyleSheet.create({
   username: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: 'white'
   },
   profilename: {
     fontSize: 16,
-    marginTop: 2
+    marginTop: 2,
+    color: 'white'
   },
   removeContainer: {
     borderRadius: 32 ,

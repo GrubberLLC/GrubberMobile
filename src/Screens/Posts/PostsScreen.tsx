@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { UserContext } from '../../Context/UserContext'
-import { Bell, Heart, MessageSquare, Plus, Star } from 'react-native-feather'
+import { Bell, Circle, Heart, MessageSquare, Plus, Star } from 'react-native-feather'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { ListContext } from '../../Context/ListContext'
 import axios from 'axios'
+import SinglePostComponent from '../../Components/Posts/SinglePostComponent'
 
 const deviceWidth = Dimensions.get('window').width
 const ImageWidth = deviceWidth - 16
@@ -18,9 +19,14 @@ const PostsScreen = () => {
   const [posts, setPosts] = useState([])
   const [showFullCaption, setShowFullCaption] = useState(false)
 
+  const [friendRequestCount, setFriendRequestCount] = useState(0)
+  const [groupRequestCount, setGroupRequestCount] = useState(0)
+
   useEffect(() => {
     if (user && user.userId) {
       getuserPosts(user.userId)
+      grabGroupRequests()
+      grabFriendRequests()
     }
   }, [])
 
@@ -28,9 +34,37 @@ const PostsScreen = () => {
     React.useCallback(() => {
       if (user && user.userId) {
         getuserPosts(user.userId)
+        grabGroupRequests()
+        grabFriendRequests()
       }
     }, [navigation])
   );
+
+  const grabGroupRequests = () => {
+    const url = `https://grubberapi.com/api/v1/members/list/pending/${user.userId}`
+    axios.get(url)
+      .then(response => {
+        console.log(response.data)
+        setGroupRequestCount(response.data.length)
+      })
+      .catch(error => {
+        console.error('Error fetching members:', error);
+        throw error;
+      });
+  }
+
+  const grabFriendRequests = () => {
+    const url = `https://grubberapi.com/api/v1/friends/following/${user.userId}`
+    axios.get(url)
+      .then(response => {
+        console.log(response.data.length)
+        setFriendRequestCount(response.data.length)
+      })
+      .catch(error => {
+        console.error('Error fetching user lists:', error);
+        throw error;
+      });
+  }
 
   const getuserPosts = (user_id: string) => {
     let url = `https://grubberapi.com/api/v1/posts/user/${user.userId}`
@@ -61,7 +95,14 @@ const PostsScreen = () => {
           <TouchableOpacity onPress={() => {navigation.navigate('AddPostScreen')}}>
             <Plus style={{marginRight: 12}} height={26} width={26} color={'white'} />
           </TouchableOpacity>
-          <Bell height={24} width={24} color={'white'}/>
+          <TouchableOpacity onPress={() => {navigation.navigate('NotificationsScreen')}}>
+            <Bell height={24} width={24} color={'white'}/>
+            {
+              friendRequestCount > 0 || groupRequestCount > 0
+                ? <Circle style={styles.notificationIcon} height={14} width={14} fill={'#e94f4e'} color={'#e94f4e'}/>
+                : null
+            }
+          </TouchableOpacity>
         </View>
       </View>
     )
@@ -83,52 +124,7 @@ const PostsScreen = () => {
                     posts.map((item) => {
                       console.log(item)
                       return(
-                        <View style={styles.post}>
-                          <View style={styles.profileHeader}>
-                            <Image style={styles.profileImage} source={{uri: profile.profile_picture}}/>
-                            <View style={{marginLeft: 16}}>
-                              <Text style={styles.profileUserName}>{profile.username}</Text>
-                              <Text style={styles.profileName}>{profile.full_name}</Text>
-                            </View>
-                          </View>
-                          <View style={styles.image}>
-                            <Image style={styles.image} source={{uri: item.media_url}}/>
-                          </View>
-                          <View style={styles.actionSection}>
-                            <Heart height={24} width={24} color={'white'}/>
-                            <Text style={{paddingHorizontal: 8, color: 'white', fontWeight: 'bold'}}>{item.likes} Likes</Text>
-                            <MessageSquare height={24} width={24} color={'white'}/>
-                            <Text style={{paddingHorizontal: 8, color: 'white', fontWeight: 'bold'}}>0 Comments</Text>
-                          </View>
-                          <TouchableOpacity style={styles.place}>
-                            <Image style={styles.placeImage} source={{uri: item.picture}}/>
-                            <View style={{marginLeft: 16}} >
-                              <View>
-                                <Text style={{marginRight: 12, color: 'white', fontWeight: '700', fontSize: 16}}>{item.name}</Text>
-                              </View>
-                              <View style={styles.buttonRow}>
-                                <Star style={{marginRight: 5}} height={24} width={24} color={'#e94f4e'} fill={'#e94f4e'}/>
-                                <Text style={{marginRight: 12, color: 'white', fontWeight: '700', fontSize: 16}}>{item.rating}/5</Text>
-                                <Text style={{marginRight: 12, color: 'white', fontWeight: '700', fontSize: 16}}>({item.review_count} Reviews)</Text>
-                              </View>
-                            </View>
-                          </TouchableOpacity>
-                          <View style={{width: '100%', paddingBottom: 16}}>
-                            {
-                              showFullCaption
-                                ? <Text style={{color: 'white', fontSize: 16}}>{item.caption}
-                                    <TouchableOpacity onPress={() => {setShowFullCaption(!showFullCaption)}}>
-                                      <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>Show Less</Text>
-                                    </TouchableOpacity>
-                                  </Text>
-                                : <Text style={{color: 'white', fontSize: 16}}>{truncateString(item.caption)} 
-                                    <TouchableOpacity onPress={() => {setShowFullCaption(!showFullCaption)}}>
-                                      <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>Show More</Text>
-                                    </TouchableOpacity>
-                                  </Text>
-                            }
-                          </View>
-                        </View>
+                        <SinglePostComponent item={item}/>
                       )
                     })
                   }
@@ -239,6 +235,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingTop: 16
+  },
+  notificationIcon: {
+    position: 'absolute',
+    right: 0,
+    top: -5
   }
 })
 

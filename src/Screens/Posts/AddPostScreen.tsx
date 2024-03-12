@@ -136,7 +136,9 @@ const AddPostScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <ChevronsLeft onPress={() => {navigation.goBack()}} style={{marginRight: 12}} height={24} width={24} color={'white'}/>
+        <TouchableOpacity onPress={() => {navigation.goBack()}}>
+          <ChevronsLeft style={{marginRight: 12}} height={24} width={24} color={'white'}/>
+        </TouchableOpacity>
         <Text style={styles.headerText}>Create Post</Text>
       </View>
       <ScrollView style={styles.content}>
