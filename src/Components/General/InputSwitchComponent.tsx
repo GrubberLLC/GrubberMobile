@@ -33,7 +33,7 @@ const InputSwitchComponent = (props) => {
 
 const styles = StyleSheet.create({
   inputContiner: {
-    backgroundColor: 'rgba(218, 218, 218, .8)',
+    backgroundColor: '#4d4d4d',
     borderRadius: 32,
     paddingHorizontal: 16,
     paddingRight: 24,
@@ -51,11 +51,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   inputIcon: {
-    marginRight: 18
+    marginRight: 18,
+    color: 'white'
   },
   inputField: {
     fontSize: 20,
-    color: 'black',
+    color: 'white',
   },
   switch: {
     transform: [{ scaleX: .85 }, { scaleY: .85 }],

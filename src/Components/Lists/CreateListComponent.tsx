@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
   },
   content: {
     width: '100%',
-    backgroundColor: 'white',
+    backgroundColor: '#2c2c2c',
     paddingVertical: 25,
     display: 'flex',
     flexDirection: 'column',
@@ -247,16 +247,21 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    color: 'white',
+    marginBottom: 16
   },
   headerText: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'white'
   },
   pictureText: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginTop: 16
+    marginTop: 16,
+    color: 'white',
+    marginBottom: 16
   },
   placeHolder: {
     height: 125,

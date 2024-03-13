@@ -18,7 +18,7 @@ const InputFieldComponent = (props) => {
       {IconComponent ? <IconComponent style={styles.inputIcon} height={24} width={24} color="black" /> : null}
       <TextInput
         placeholder={palceholder}
-        placeholderTextColor={'grey'}
+        placeholderTextColor={'white'}
         autoCapitalize='none'
         style={styles.inputField}
         returnKeyLabel='Done'
@@ -32,7 +32,7 @@ const InputFieldComponent = (props) => {
 
 const styles = StyleSheet.create({
   inputContiner: {
-    backgroundColor: 'rgba(218, 218, 218, .8)',
+    backgroundColor: '#4d4d4d',
     borderRadius: 32,
     paddingHorizontal: 16,
     paddingRight: 24,
@@ -43,7 +43,8 @@ const styles = StyleSheet.create({
     marginTop: 12
   },
   inputIcon: {
-    marginRight: 8
+    marginRight: 8,
+    color: 'white'
   },
   inputIconValid: {
     marginLeft: 8
@@ -51,9 +52,9 @@ const styles = StyleSheet.create({
   inputField: {
     flex: 1,
     fontSize: 20,
-    color: 'black',
+    color: 'white',
     borderBottomWidth: 2,
-    borderBottomColor: 'grey'
+    borderBottomColor: 'white'
   }
 })
 

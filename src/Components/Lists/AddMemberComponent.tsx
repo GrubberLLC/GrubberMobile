@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { X } from 'react-native-feather'
+import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { User, X } from 'react-native-feather'
 import InputFieldComponent from '../General/InputFieldComponent'
 import axios from 'axios' 
 import { BASE_URL } from '@env';
-import { ScrollView } from 'react-native-gesture-handler'
+import { ScrollView, TextInput } from 'react-native-gesture-handler'
 import { UserContext } from '../../Context/UserContext'
 
 const AddMemberComponent = (props) => {
@@ -68,15 +68,18 @@ const AddMemberComponent = (props) => {
             <X height={26} width={26} color={'#e94f4e'}/>
           </TouchableOpacity>
         </View>
-        <InputFieldComponent 
-          style={styles.input}
-          palceholder='Search Username'
-          label='User'
-          value={searchTerm}
-          handleFunction={handleSearchChange}
-          secure={false}
-          validation={true}
-        />
+        <View style={styles.inputContiner}>
+          <User style={styles.inputIcon} height={24} width={24} color="white" />
+          <TextInput
+            placeholder={'search username...'}
+            placeholderTextColor={'white'}
+            autoCapitalize='none'
+            style={styles.inputField}
+            returnKeyLabel='Done'
+            value={searchTerm}
+            onChangeText={(text) => {handleSearchChange(text)}}
+          />
+        </View>
         <View style={styles.searchResults}>
           {
             searchResults.length > 0
@@ -87,7 +90,8 @@ const AddMemberComponent = (props) => {
                       return(
                         <View style={styles.profile}>
                           <View style={styles.profileSection}>
-                            <View style={styles.profilePicture}></View>
+                            {/* <View style={styles.profilePicture}></View> */}
+                            <Image style={styles.profilePicture} source={{uri: profile.profile_picture}}/>
                           </View>
                           <View style={styles.profileNames}>
                             <Text style={styles.username}>{profile.username}</Text>
@@ -121,7 +125,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#2c2c2c',
     paddingVertical: 25,
     display: 'flex',
     flexDirection: 'column',
@@ -137,7 +141,32 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'white'
+  },
+  inputContiner: {
+    backgroundColor: '#4d4d4d',
+    borderRadius: 32,
+    paddingHorizontal: 16,
+    paddingRight: 24,
+    padding: 12,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 18
+  },
+  inputIcon: {
+    marginRight: 8
+  },
+  inputIconValid: {
+    marginLeft: 8
+  },
+  inputField: {
+    flex: 1,
+    fontSize: 20,
+    color: 'white',
+    borderBottomWidth: 2,
+    borderBottomColor: 'white'
   },
   pictureText: {
     fontSize: 20,
@@ -147,7 +176,7 @@ const styles = StyleSheet.create({
   placeHolder: {
     height: 125,
     width: 125,
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#4d4d4d',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -180,7 +209,7 @@ const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: 'white',
+    backgroundColor: '#4d4d4d',
     alignItems: 'center',
     padding: 12,
     borderBottomColor: 'lightgrey',
@@ -200,18 +229,21 @@ const styles = StyleSheet.create({
   username: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: 'white'
   },
   profilename: {
-    fontSize: 16
+    fontSize: 16,
+    color: 'white'
   },
   removeContainer: {
     borderRadius: 32 ,
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#e94f4e',
     padding: 6
   },
   remove: {
-    color: 'black',
-    padding: 8
+    color: 'white',
+    padding: 2,
+    fontWeight: 'bold'
   },
 })
 

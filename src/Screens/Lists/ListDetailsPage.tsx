@@ -102,19 +102,18 @@ const ListDetailsPage = ({route}) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+          <TouchableOpacity onPress={() => {navigation.goBack()}}>
+            <ChevronsLeft height={26} width={26} color={'white'} />
+          </TouchableOpacity>
+        </View>
+      </View>
       <View style={styles.imageContainer}>
         <Image style={styles.image} source={{uri: list.picture}}/>
-        <View style={styles.overlay}></View>
-      </View>
-      <View style={styles.header}>
-        <View style={styles.topBar}>
-          <TouchableOpacity onPress={() => {navigation.goBack()}} style={styles.iconContainer}>
-            <ChevronsLeft style={styles.icon} height={30} width={30} color={'white'}/>
-          </TouchableOpacity>
-          <View style={styles.listNameDescription}>
-            <Text style={styles.name}>{list.name}</Text>
-            <Text style={styles.description}>{list.description}</Text>
-          </View>
+        <View style={styles.overlay}>
+          <Text style={{fontSize: 22, fontWeight: 'bold', color: 'white', marginBottom: 8}}>{list.name}</Text>
+          <Text style={{fontSize: 18, fontWeight: '600', color: 'white', marginBottom: 8}}>{list.description}</Text>
         </View>
       </View>
       <View style={viewAddMembers === true ? styles.contentListOpen : styles.contentList}>
@@ -135,7 +134,7 @@ const ListDetailsPage = ({route}) => {
                   />
                 </View>
                 <View style={styles.disclaimer}>
-                  <Text>Anyone can view your list and it's content</Text>
+                  <Text style={{color: 'white'}}>Anyone can view your list and it's content</Text>
                 </View>
               </View>
             </>
@@ -213,32 +212,34 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
   },
+  header: {
+    backgroundColor: 'black',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+  },
   imageContainer: {
-    position: 'absolute',
-    width: imageWidth,
-    height: imageWidth,
-    // backgroundColor: 'grey',
-    borderRadius: 12,
-    marginTop: 8
+    height: imageWidth - 180,
+    width: imageWidth
   },
   image: {
-    flex: 1,
-    zIndex: 3
+    height: imageWidth - 180,
+    width: imageWidth
   },
   overlay: {
     position: 'absolute',
+    top: 0,
+    left: 0,
+    height: imageWidth - 180,
     width: imageWidth,
-    height: imageWidth,
-    backgroundColor: 'rgba(20, 20, 20,.5)',
-    borderRadius: 12,
-    zIndex: 4
-  },
-  header: {
-    width: '100%',
-    height: imageWidth - 220,
+    backgroundColor: 'rgba(0,0,0,.5)',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between'
+    justifyContent: 'flex-end',
+    padding: 16
   },
   topBar: {
     width: '100%',
@@ -274,8 +275,6 @@ const styles = StyleSheet.create({
   contentList: {
     flex: 1,
     backgroundColor: 'lightgrey',
-    borderTopLeftRadius: 32,
-    borderTopRightRadius: 32,
     overflow: 'hidden'
   },
   contentListOpen: {
@@ -287,7 +286,7 @@ const styles = StyleSheet.create({
   },
   subcontainer: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#2c2c2c',
     padding: 16
   },
   subheader: {
@@ -295,7 +294,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'white'
   },
   subHeaderText: {
     fontSize: 20,
@@ -314,11 +314,12 @@ const styles = StyleSheet.create({
     marginBottom: 12
   },
   title: {
-    fontSize: 18
+    fontSize: 18,
+    color: 'white'
   },
   switch: {
     transform: [{ scaleX: .85 }, { scaleY: .85 }],
-    borderColor: 'lightgrey',
+    borderColor: 'black',
     borderWidth: 2,
     borderRadius: 16,
     padding: 2
@@ -327,7 +328,7 @@ const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   subheader: {
     display: 'flex',
@@ -344,15 +345,16 @@ const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: 'white',
+    backgroundColor: '#4d4d4d',
     alignItems: 'center',
-    padding: 12,
+    paddingVertical: 18,
+    paddingHorizontal: 16,
     borderBottomColor: 'lightgrey',
     borderBottomWidth: 1
   },
   profilePicture: {
-    height: 45,
-    width: 45,
+    height: 35,
+    width: 35,
     borderRadius: 30,
     marginRight: 12,
     overflow: 'hidden'
@@ -363,10 +365,12 @@ const styles = StyleSheet.create({
   username: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: 'white'
   },
   profilename: {
     fontSize: 16,
-    marginTop: 2
+    marginTop: 2,
+    color: 'white'
   },
   removeContainer: {
     borderRadius: 32 ,
