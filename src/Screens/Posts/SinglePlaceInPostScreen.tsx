@@ -12,7 +12,7 @@ import SinglePlacePostComponent from '../../Components/Lists/SinglePlacePostComp
 
 const imageWidth = Dimensions.get('window').width 
 
-const SinglePlaceScreen = ({route}) => {
+const SinglePlaceInPostScreen = ({route}) => {
   const { place } = route.params
 
   const navigation = useNavigation()
@@ -347,4 +347,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default SinglePlaceScreen
+export default SinglePlaceInPostScreen

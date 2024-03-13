@@ -5,18 +5,15 @@ import { UserContext } from '../../Context/UserContext'
 import axios from 'axios'
 import { TextInput } from 'react-native-gesture-handler'
 import SinglePostScreen from '../../Screens/Posts/SinglePostScreen'
-import { useNavigation } from '@react-navigation/native'
 
 const deviceWidth = Dimensions.get('window').width
 const ImageWidth = deviceWidth - 16
 
-const SinglePostComponent = (props) => {
+const SinglePlacePostComponent = (props) => {
 
   const {item} = props
 
-  const navigation = useNavigation()
-
-  const { profile, user } = useContext(UserContext)
+  const {user} = useContext(UserContext)
 
   const [showFullCaption, setShowFullCaption] = useState(false)
   const [postLikes, setPostLikes] = useState([])
@@ -104,10 +101,10 @@ const SinglePostComponent = (props) => {
   return (
     <View key={item.post_id} style={styles.post}>
       <View style={styles.profileHeader}>
-        <Image style={styles.profileImage} source={{uri: profile.profile_picture ? profile.profile_picture : null}}/>
+        <Image style={styles.profileImage} source={{uri: item.profile_picture ? item.profile_picture : null}}/>
         <View style={{marginLeft: 16}}>
-          <Text style={styles.profileUserName}>{profile.username}</Text>
-          <Text style={styles.profileName}>{profile.full_name}</Text>
+          <Text style={styles.profileUserName}>{item.username}</Text>
+          <Text style={styles.profileName}>{item.full_name}</Text>
         </View>
       </View>
       <TouchableWithoutFeedback onPress={handleDoubleTap}>
@@ -121,7 +118,7 @@ const SinglePostComponent = (props) => {
         </TouchableOpacity>
         <Text style={{paddingHorizontal: 8, color: 'white', fontWeight: 'bold'}}>{postLikes.length} Likes</Text>
       </View>
-      <TouchableOpacity onPress={() => {navigation.navigate('SinglePlaceInPostScreen', {place: item})}} style={styles.place}>
+      <TouchableOpacity style={styles.place}>
         <Image style={styles.placeImage} source={{uri: item.picture}}/>
         <View style={{marginLeft: 16}} >
           <View>
@@ -254,4 +251,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default SinglePostComponent
+export default SinglePlacePostComponent
