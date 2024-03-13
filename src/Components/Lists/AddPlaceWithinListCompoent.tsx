@@ -140,7 +140,7 @@ const AddPlaceWithinListCompoent = (props) => {
         <View style={styles.inputContainer}>
           <View style={styles.inputSubContainer}>
             <View style={styles.individualContainer}>
-              <Home style={styles.icon} height={20} width={20} color={'#e94f4e'}/>
+              <Home style={styles.icon} height={20} width={20} color={'white'}/>
               <TextInput 
                 placeholder={'name'}
                 placeholderTextColor={'grey'}
@@ -153,7 +153,7 @@ const AddPlaceWithinListCompoent = (props) => {
             </View>
             <View style={{height: '90%', width: 1, backgroundColor: 'lightgrey'}}></View>
             <View style={styles.individualContainer}>
-              <MapPin style={styles.icon} height={20} width={20} color={'#e94f4e'}/>
+              <MapPin style={styles.icon} height={20} width={20} color={'white'}/>
               <TextInput 
                 placeholder={'location'}
                 placeholderTextColor={'grey'}
@@ -200,15 +200,15 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-end',
-    backgroundColor: 'rbga(0,0,0,0)'
+    backgroundColor: 'rbga(0,0,0,0)',
   },
   content: {
     flex: 1,
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#2c2c2c',
     paddingVertical: 25,
     display: 'flex',
     flexDirection: 'column',
-    paddingHorizontal: 16,
+    paddingHorizontal: 8,
     borderRadius: 32
   },
   header: {
@@ -220,7 +220,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'white'
   },
   pictureText: {
     fontSize: 20,
@@ -230,7 +231,7 @@ const styles = StyleSheet.create({
   placeHolder: {
     height: 125,
     width: 125,
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#2c2c2c',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -298,7 +299,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#2c2c2c',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     marginTop: 16,
@@ -310,7 +311,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     height: 50,
     borderRadius: 16,
-    backgroundColor: 'white'
+    backgroundColor: '#4d4d4d'
   },
   inputSubContainer: {
     display: 'flex',
@@ -318,7 +319,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     height: 50,
     borderRadius: 16,
-    backgroundColor: 'white'
+    backgroundColor: '#4d4d4d'
   },
   individualContainer: {
     width: '45%',
@@ -333,8 +334,9 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 8,
     fontSize: 16,
-    borderBottomColor: 'lightgrey',
-    borderBottomWidth: 2
+    borderBottomColor: 'grey',
+    borderBottomWidth: 2,
+    color: 'white'
   },
   searchContainer: {
     display: 'flex',
@@ -363,7 +365,8 @@ const styles = StyleSheet.create({
   },
   noPlaceText: {
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'white'
   }
 })
 

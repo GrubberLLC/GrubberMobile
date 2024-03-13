@@ -61,12 +61,8 @@ const ShowRandomPlaceCompoenent = (props) => {
             <View style={styles.detailsRow}>
               <View style={styles.detailsRowLeft}>
                 <Star style={{marginRight: 4}} height={18} width={18} fill={'#e94f4e'} color={'#e94f4e'}/>
-                <Text style={styles.rating}>{place.rating}</Text>
-                <Text style={styles.address}>({place.review_count} reviews)</Text>
-              </View>
-              <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                <MessageSquare style={{marginRight: 4}} height={18} width={18} color={'#e94f4e'}/>
-                <Text>0</Text>
+                <Text style={styles.rating}>{place.rating}/5</Text>
+                <Text style={{color: 'white', fontWeight: 'bold'}}>({place.review_count} reviews)</Text>
               </View>
             </View>
           </View>
@@ -86,7 +82,7 @@ const styles = StyleSheet.create({
   },
   content: {
     width: '100%',
-    backgroundColor: 'white',
+    backgroundColor: '#2c2c2c',
     paddingVertical: 25,
     display: 'flex',
     flexDirection: 'column',
@@ -103,7 +99,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'white'
   },
   pictureText: {
     fontSize: 20,
@@ -118,7 +115,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 16,
+    borderRadius: 8,
     marginTop: 8
   },
   image: {
@@ -161,7 +158,9 @@ const styles = StyleSheet.create({
     overflow: 'hidden'
   },
   info: {
-    padding: 16
+    padding: 8,
+    backgroundColor: '#4d4d4d',
+    borderRadius: 8
   },
   infoTopBar: {
     width: '100%',
@@ -173,17 +172,18 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'white'
   },
   item: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#e94f4e'
+    color: 'white'
   },
   activity: {
     fontSize: 18,
     fontWeight: '600',
-    color: 'grey'
+    color: 'white'
   },
   detailsRowLeft: {
     flex: 1,
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   },
   rating: {
     fontSize: 18,
-    color: 'black',
+    color: 'white',
     fontWeight: 'bold',
     marginRight: 4
   },

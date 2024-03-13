@@ -3,7 +3,7 @@ import React from 'react'
 import { Dimensions, Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { MessageSquare, Star } from 'react-native-feather'
 
-const imageWidth = Dimensions.get('window').width - 32
+const imageWidth = Dimensions.get('window').width - 16
 
 const PlaceInListTileComponent = (props) => {
   const {item} = props
@@ -40,12 +40,8 @@ const PlaceInListTileComponent = (props) => {
         <View style={styles.detailsRow}>
           <View style={styles.detailsRowLeft}>
             <Star style={{marginRight: 4}} height={18} width={18} fill={'#e94f4e'} color={'#e94f4e'}/>
-            <Text style={styles.rating}>{item.rating}</Text>
+            <Text style={styles.rating}>{item.rating}/5</Text>
             <Text style={styles.address}>({item.review_count} reviews)</Text>
-          </View>
-          <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-            <MessageSquare style={{marginRight: 4}} height={18} width={18} color={'#e94f4e'}/>
-            <Text>0</Text>
           </View>
         </View>
       </View>
@@ -56,7 +52,7 @@ const PlaceInListTileComponent = (props) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    backgroundColor: 'white',
+    backgroundColor: '#4d4d4d',
     borderRadius: 16,
     overflow: 'hidden',
     marginBottom: 12
@@ -72,7 +68,7 @@ const styles = StyleSheet.create({
     left: 0,
     width: imageWidth,
     height: imageWidth - 150,
-    backgroundColor: 'rgba(0,0,0,.6)'
+    backgroundColor: 'rgba(0,0,0,.4)'
   },
   info: {
     padding: 16
@@ -87,17 +83,18 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'white'
   },
   item: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#e94f4e'
+    color: 'white'
   },
   activity: {
     fontSize: 18,
     fontWeight: '600',
-    color: 'grey'
+    color: 'white'
   },
   detailsRowLeft: {
     flex: 1,
@@ -108,7 +105,13 @@ const styles = StyleSheet.create({
   },
   rating: {
     fontSize: 18,
-    color: 'black',
+    color: 'white',
+    fontWeight: 'bold',
+    marginRight: 4
+  },
+  address: {
+    fontSize: 18,
+    color: 'white',
     fontWeight: 'bold',
     marginRight: 4
   },

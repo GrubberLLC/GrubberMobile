@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { Dimensions, Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 
-const imageWidth = Dimensions.get('window').width - 32
+const imageWidth = Dimensions.get('window').width - 16
 
 const ListPlaceTileComponent = (props) => {
   const {item} = props
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     backgroundColor: '#4d4d4d',
-    borderRadius: 16,
+    borderRadius: 8,
     overflow: 'hidden',
     marginBottom: 12
   },

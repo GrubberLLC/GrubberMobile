@@ -79,14 +79,6 @@ const PostsScreen = () => {
       });
   }
 
-  function truncateString(str, maxLength = 150) {
-    if (str.length > maxLength) {
-      return str.slice(0, maxLength) + '...';
-    } else {
-      return str;
-    }
-  }
-
   const displayFeed = () => {
     return(
       <View style={styles.header}>
@@ -124,7 +116,7 @@ const PostsScreen = () => {
                     posts.map((item) => {
                       console.log(item)
                       return(
-                        <SinglePostComponent item={item}/>
+                        <SinglePostComponent item={item} profile={profile}/>
                       )
                     })
                   }

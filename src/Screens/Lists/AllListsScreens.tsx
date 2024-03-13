@@ -38,7 +38,7 @@ const AllListsScreens = () => {
       <View style={styles.header}>
         <Text style={styles.headerText}>Your Lists</Text>
         <View style={styles.headerIcons}>
-          <TouchableOpacity onPress={() => {navigation.navigate('AddPostScreen')}}>
+          <TouchableOpacity onPress={() => {setViewAddList(!viewAddList)}}>
             <Plus height={26} width={26} color={'white'} />
           </TouchableOpacity>
         </View>
@@ -126,8 +126,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2c2c2c',
   },
   scrollItem: {
-    paddingHorizontal: 16,
-    paddingTop: 24,
+    padding: 8,
   },
   noLocationContainer: {
     flex: 1,

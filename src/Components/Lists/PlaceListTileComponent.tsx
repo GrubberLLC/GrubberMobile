@@ -2,7 +2,7 @@ import React from 'react'
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { MessageSquare, Plus, Star } from 'react-native-feather'
 
-const imageWidth = Dimensions.get('window').width - 24
+const imageWidth = Dimensions.get('window').width - 16
 
 const PlaceListTileComponent = (props) => {
   const {addToList, place} = props
@@ -31,10 +31,6 @@ const PlaceListTileComponent = (props) => {
             <Text style={styles.rating}>{place.rating}</Text>
             <Text style={styles.address}>({place.review_count} reviews)</Text>
           </View>
-          <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-            <MessageSquare style={{marginRight: 4}} height={18} width={18} color={'#e94f4e'}/>
-            <Text>0</Text>
-          </View>
         </View>
       </View>
     </View>
@@ -43,33 +39,41 @@ const PlaceListTileComponent = (props) => {
 
 const styles = StyleSheet.create({
   container: {
+    paddingVertical: 16,
     borderRadius: 16,
-    overflow: 'hidden',
-    marginBottom: 16
+    overflow: 'hidden'
   },
   imageContainer: {
     height: imageWidth - 150,
     width: imageWidth,
   },
   image: {
-    flex: 1
+    height: imageWidth - 150,
+    width: imageWidth,
+    borderTopRightRadius: 8,
+    borderTopLeftRadius: 8,
+    overflow: 'hidden'
   },
   overlayContainer: {
     position: 'absolute',
-    top: 0,
+    top: 16,
     left: 0,
     height: imageWidth - 150,
     width: imageWidth,
-    backgroundColor: 'rgba(0,0,0,.5)',
+    backgroundColor: 'rgba(0,0,0,.4)',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-end',
     justifyContent: 'space-between',
-    padding: 16
+    padding: 16,
+
   },
   detailsContainter: {
-    padding: 8,
-    backgroundColor: 'white'
+    padding: 16,
+    backgroundColor: '#4d4d4d',
+    borderBottomRightRadius: 16,
+    borderBottomLeftRadius: 16,
+    overflow: 'hidden'
   },
   detailsRow: {
     width: '100%',
@@ -83,28 +87,30 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 4,  },
+    marginTop: 4,  
+  },
   name: {
     fontWeight: 'bold',
-    fontSize: 22
+    fontSize: 22,
+    color: 'white'
   },
   price: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#e94f4e'
+    color: 'white'
   },
   address: {
     fontSize: 18,
-    color: 'grey'
+    color: 'white'
   },
   rating: {
     fontSize: 18,
-    color: 'black',
+    color: 'white',
     fontWeight: 'bold',
     marginRight: 4
   },
   favoriteContainer: {
-    backgroundColor: 'grey',
+    backgroundColor: 'white',
     padding: 10,
     borderRadius: 32,
     marginTop: 4

@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { StyleSheet, TouchableOpacity, View, Image, Text, Dimensions, TouchableWithoutFeedback } from 'react-native'
-import { Heart, MessageSquare, Star } from 'react-native-feather'
+import { StyleSheet, TouchableOpacity, View, Image, Text, Dimensions, TouchableWithoutFeedback, Modal } from 'react-native'
+import { ChevronsRight, Heart, MessageSquare, Star } from 'react-native-feather'
 import { UserContext } from '../../Context/UserContext'
 import axios from 'axios'
+import { TextInput } from 'react-native-gesture-handler'
+import SinglePostScreen from '../../Screens/Posts/SinglePostScreen'
 
 const deviceWidth = Dimensions.get('window').width
 const ImageWidth = deviceWidth - 16
@@ -16,6 +18,8 @@ const SinglePostComponent = (props) => {
   const [showFullCaption, setShowFullCaption] = useState(false)
   const [postLikes, setPostLikes] = useState([])
 
+  const [viewPost, setViewPost] = useState(false)
+
   const hasUserLikedPost = postLikes.some(like => like.user_id === user.userId);
 
   let lastTap: any = null;
@@ -24,9 +28,13 @@ const SinglePostComponent = (props) => {
     getPostLikes()
   }, [])
 
+  const toggleViewPost = () => {
+    setViewPost(!viewPost)
+  }
+
   const handleDoubleTap = () => {
     const now = Date.now();
-    const DOUBLE_PRESS_DELAY = 300;
+    const DOUBLE_PRESS_DELAY = 500;
     if (lastTap && now - lastTap < DOUBLE_PRESS_DELAY) {
       hasUserLikedPost
         ? removeLike()
@@ -36,7 +44,7 @@ const SinglePostComponent = (props) => {
     }
   };
 
-  function truncateString(str: string, maxLength = 150) {
+  function truncateString(str: string, maxLength = 100) {
     if (str.length > maxLength) {
       return str.slice(0, maxLength) + '...';
     } else {
@@ -124,20 +132,24 @@ const SinglePostComponent = (props) => {
         </View>
       </TouchableOpacity>
       <View style={{width: '100%', paddingBottom: 16}}>
-        {
-          showFullCaption
-            ? <Text style={{color: 'white', fontSize: 16}}>{item.caption}
-                <TouchableOpacity onPress={() => {setShowFullCaption(!showFullCaption)}}>
-                  <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>Show Less</Text>
-                </TouchableOpacity>
-              </Text>
-            : <Text style={{color: 'white', fontSize: 16}}>{truncateString(item.caption)} 
-                <TouchableOpacity onPress={() => {setShowFullCaption(!showFullCaption)}}>
-                  <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}>Show More</Text>
-                </TouchableOpacity>
-              </Text>
-        }
+        <Text style={{color: 'white', fontSize: 16}}>{truncateString(item.caption)} 
+          <TouchableOpacity onPress={() => {setShowFullCaption(!showFullCaption)}}>
+            <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}></Text>
+          </TouchableOpacity>
+        </Text>
       </View>
+      <TouchableOpacity onPress={() => {toggleViewPost()}} style={styles.viewMoreContainer} >
+        <Text style={{color: 'white', fontWeight: 'bold'}}>Post Details </Text>
+        <ChevronsRight style={{marginLeft: 8}} height={16} width={16} color={'white'}/>
+      </TouchableOpacity>
+      <Modal
+        style={styles.modal}
+        animationType="slide"
+        transparent={true}
+        visible={viewPost}
+      >
+        <SinglePostScreen viewPost={viewPost} toggleViewPost={toggleViewPost} item={item}/>
+      </Modal>
     </View>
   )
 }
@@ -230,6 +242,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     top: -5
+  },
+  viewMoreContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8
   }
 })
 
