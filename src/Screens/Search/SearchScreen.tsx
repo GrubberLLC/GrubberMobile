@@ -9,6 +9,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { Bold, Home, MapPin, Search } from 'react-native-feather';
 import PlaceTileComponent from '../../Components/Search/PlaceTileComponent';
 import AddToListComponent from '../../Components/Search/AddToListComponent';
+import SearchPlacesComponent from '../../Components/Search/SearchPlacesComponent';
 
 
 const SearchScreen  = () => {
@@ -25,6 +26,8 @@ const SearchScreen  = () => {
   const [viewAddToList, setViewAddToList] = useState(false)
 
   const [loading, setLoading] = useState(false)
+
+  const [viewTab, setViewTab] = useState('user')
 
   const toggleViewAddToList = () => {
     setViewAddToList(!viewAddToList)
@@ -191,75 +194,53 @@ const SearchScreen  = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.title}>
-          <Text style={styles.titleText}>Find A Place</Text>
-        </View>
+        <Text style={styles.headerText}>Discover</Text>
       </View>
       <View style={styles.contentContainer}>
-        <View style={styles.inputContainer}>
-          <View style={styles.individualContainer}>
-            <Home style={styles.icon} height={20} width={20} color={'#e94f4e'}/>
-            <TextInput 
-              placeholder={'name'}
-              placeholderTextColor={'grey'}
-              autoCapitalize='none'
-              style={styles.inputField}
-              returnKeyLabel='Done'
-              value={searchTerm}
-              onChangeText={(text) => {setSearchTerm(text)}}
-            />
-          </View>
-          <View style={{height: '90%', width: 1, backgroundColor: 'lightgrey'}}></View>
-          <View style={styles.individualContainer}>
-            <MapPin style={styles.icon} height={20} width={20} color={'#e94f4e'}/>
-            <TextInput 
-              placeholder={'location'}
-              placeholderTextColor={'grey'}
-              autoCapitalize='none'
-              style={styles.inputField}
-              returnKeyLabel='Done'
-              value={searchLocation}
-              onChangeText={(text) => {setSearchLocation(text)}}
-            />
-          </View>
-          <TouchableOpacity onPress={() => {searchYelp()}} style={styles.searchContainer}>
-            <Search style={styles.searchIcon} height={20} width={20} color={'white'} />
-          </TouchableOpacity>
-        </View>
         {
-          isRecommended
-            ? <View style={styles.recommendedHeader}>
-                <Text style={styles.recommendedHeaderText}>Recommendations:</Text>
+          viewTab === 'user'
+            ? <View style={styles.selectionContainer}>
+                <View style={styles.tab}>
+                  <Text style={styles.tabTextSelected}>Users</Text>
+                </View>
+                <TouchableOpacity onPress={() => {setViewTab('place')}} style={styles.tab}>
+                  <Text style={styles.tabText}>Places</Text>
+                </TouchableOpacity>
               </View>
+            : <View style={styles.selectionContainer}>
+                <TouchableOpacity onPress={() => {setViewTab('user')}} style={styles.tab}>
+                  <Text style={styles.tabText}>Users</Text>
+                </TouchableOpacity>
+                <View style={styles.tab}>
+                  <Text style={styles.tabTextSelected}>Places</Text>
+                </View>
+              </View>
+        }
+        {
+          viewTab === 'user'
+            ? <View></View>
+            : <View style={{flex: 1}}>
+                <View style={{flex: 1}}>
+                  <SearchPlacesComponent viewTab={viewTab} setViewTab={setViewTab} />
+                </View>
+              </View>
+        }
+        {/* {
+          viewTab === 'place'
+            ? isRecommended
+                ? <View style={styles.recommendedHeader}>
+                    <Text style={styles.recommendedHeaderText}>Recommendations:</Text>
+                  </View>
+                : null
             : null
         }
         <View style={styles.results}>
           {
-            loading
-              ? <View style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator size={'large'} color={'#e94f4e'}/></View>
-              : results.length > 0
-                  ? <ScrollView style={styles.scroll}>
-                      {
-                        results.map((place) => {
-                          return(
-                            <>
-                              <PlaceTileComponent checkIfPlaceExists={checkIfPlaceExists} toggleViewAddToList={toggleViewAddToList} favorites={favorites} removeFromFavorites={removeFromFavorites} addToPlaces={addToPlaces} place={place}/>
-                              <Modal
-                                style={styles.modal}
-                                animationType="slide"
-                                transparent={true}
-                                visible={viewAddToList}
-                              >
-                                <AddToListComponent viewAddToList={viewAddToList} toggleViewAddToList={toggleViewAddToList} place={place}/>
-                              </Modal>
-                            </>
-                          )
-                        })
-                      }
-                    </ScrollView>
-                  : <View style={styles.noLocation}><Text style={styles.noPlaceText}>No Places Found...</Text></View>
+            viewTab === 'place'
+              ? <View><SearchPlacesComponent viewTab={viewTab} setViewTab={setViewTab} /></View>
+              : <View><Text>Search User</Text></View>
           }
-        </View>
+        </View> */}
       </View>
     </View>
   )
@@ -271,12 +252,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
   },
   header: {
-    width: '100%',
+    backgroundColor: 'black',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 18,
-    paddingBottom: 4
+    alignItems: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+  },
+  headerText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold'
   },
   title: {
     flex: 1,
@@ -291,11 +278,47 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    marginTop: 16,
-    padding: 12
+    backgroundColor: '#2c2c2c',
+    padding: 16
+  },
+  selectionContainer: {
+    width: '100%',
+    backgroundColor: '#4d4d4d',
+    borderRadius: 8,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 8,
+    marginBottom: 24
+  },
+  tab: {
+    width: '50%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  tabText: {
+    paddingVertical: 8,
+    width: '100%',
+    fontWeight: 'bold',
+    fontSize: 18,
+    backgroundColor: '#4d4d4d',
+    textAlign: 'center',
+    borderRadius: 8,
+    overflow: 'hidden',
+    color: 'white'
+  },
+  tabTextSelected: {
+    paddingVertical: 8,
+    width: '100%',
+    fontWeight: 'bold',
+    fontSize: 18,
+    backgroundColor: 'grey',
+    textAlign: 'center',
+    borderRadius: 8,
+    overflow: 'hidden',
+    color: 'white'
   },
   inputContainer: {
     width: '100%',
@@ -352,11 +375,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   recommendedHeader: {
-    marginTop: 16
+    marginTop: 8
   },
   recommendedHeaderText: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'white'
   }
 })
 
