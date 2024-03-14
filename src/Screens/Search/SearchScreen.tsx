@@ -10,6 +10,7 @@ import { Bold, Home, MapPin, Search } from 'react-native-feather';
 import PlaceTileComponent from '../../Components/Search/PlaceTileComponent';
 import AddToListComponent from '../../Components/Search/AddToListComponent';
 import SearchPlacesComponent from '../../Components/Search/SearchPlacesComponent';
+import SearchUsersComponent from '../../Components/Search/SearchUsersComponent';
 
 
 const SearchScreen  = () => {
@@ -218,7 +219,9 @@ const SearchScreen  = () => {
         }
         {
           viewTab === 'user'
-            ? <View></View>
+            ? <View style={{flex: 1}}>
+                <SearchUsersComponent />
+              </View>
             : <View style={{flex: 1}}>
                 <View style={{flex: 1}}>
                   <SearchPlacesComponent viewTab={viewTab} setViewTab={setViewTab} />
