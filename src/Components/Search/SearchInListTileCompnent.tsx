@@ -29,7 +29,7 @@ const SearchInListTileCompnent = (props) => {
   }
 
   return (
-    <TouchableOpacity onPress={() => {navigation.navigate('SinglePlaceScreen', {place: place})}} style={styles.container}>
+    <TouchableOpacity onPress={() => {navigation.navigate('SearchPlaceScreen', {place: place})}} style={styles.container}>
       <Image style={styles.listImage} source={{uri: place.image_url}}/>
       <View style={styles.overlay}></View>
       <View style={styles.info}>
