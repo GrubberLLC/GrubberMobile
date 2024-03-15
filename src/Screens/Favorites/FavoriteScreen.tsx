@@ -58,9 +58,7 @@ const FavoriteScreen  = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.title}>
-          <Text style={styles.titleText}>Your Favorites</Text>
-        </View>
+        <Text style={styles.headerText}>Favorites</Text>
       </View>
       <View style={styles.contentContainer}>
         <View style={styles.results}>
@@ -91,12 +89,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
   },
   header: {
-    width: '100%',
+    backgroundColor: 'black',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 18,
-    paddingBottom: 4
+    alignItems: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+  },
+  headerText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold'
   },
   title: {
     flex: 1,
@@ -111,10 +115,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    marginTop: 16,
+    backgroundColor: '#2c2c2c',
     padding: 12
   },
   inputContainer: {
