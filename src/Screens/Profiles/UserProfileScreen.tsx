@@ -9,6 +9,8 @@ import { ChevronsLeft, MapPin } from 'react-native-feather';
 import ListPlaceTileComponent from '../../Components/Lists/ListPlaceTileComponent';
 import ProfileFavoritesTile from '../../Components/Profile/ProfileFavoritesTile';
 import ProfileListPlaceTileComponent from '../../Components/Profile/ProfileListPlaceTileComponent';
+import PostGridComponent from '../../Components/Profile/PostGridComponent';
+import ListGridComponent from '../../Components/Profile/ListGridComponent';
 
 
 const UserProfileScreen  = ({route}) => {
@@ -17,7 +19,7 @@ const UserProfileScreen  = ({route}) => {
 
   const {user} = useContext(UserContext)
 
-  const [tabView, setTabView] = useState('favorites')
+  const [tabView, setTabView] = useState('post')
 
   const [followers, setFollowers] = useState([])
   const [following, setFollowing] = useState([])
@@ -26,12 +28,15 @@ const UserProfileScreen  = ({route}) => {
 
   const [relationship, setRelationship] = useState(null)
 
+  const [allPosts, setAllPosts] = useState([])
+
   useEffect(() => {
     grabFollowingCount(profile.user_id)
     grabFollowersCount(profile.user_id)
     getUserFavorites(profile.user_id)
     getRelatiobship(profile.user_id)
     getUserLists(profile.user_id)
+    getuserPosts(profile.user_id)
   }, [])
 
   useFocusEffect(
@@ -42,9 +47,22 @@ const UserProfileScreen  = ({route}) => {
         getUserFavorites(profile.user_id)
         getRelatiobship(profile.user_id)
         getUserLists(profile.user_id)
+        getuserPosts(profile.user_id)
       }
     }, [navigation])
   );
+
+  const getuserPosts = (user_id: string) => {
+    let url = `https://grubberapi.com/api/v1/posts/user/${user.userId}`
+    axios.get(url)
+      .then(response => {
+        setAllPosts(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching profile:', error);
+        throw error;
+      });
+  }
 
   const getUserLists = (user_id: string) => {
     const url = `https://grubberapi.com/api/v1/lists/user/${user_id}`
@@ -169,13 +187,8 @@ const UserProfileScreen  = ({route}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.subHeaderBottom}>
-        <View style={styles.imageContainer}>
-          <Image style={styles.image} source={{uri: profile.profile_picture}}/>
-        </View>
-      </View>
       <View style={styles.subContainer}>
-        <View style={styles.header}>
+        {/* <View style={styles.header}>
           <View style={styles.subHeader}>
             <TouchableOpacity onPress={() => {navigation.goBack()}} style={styles.manuIcon}>
               <ChevronsLeft style={{flex: 1}} height={28} width={28} color={'white'}/>
@@ -192,176 +205,81 @@ const UserProfileScreen  = ({route}) => {
               }
             </View>
           </View>
+        </View> */}
+        <View style={styles.header}>
+          <View style={styles.headerIcons}>
+            <TouchableOpacity onPress={() => {navigation.goBack()}} style={styles.diceImage}>
+              <ChevronsLeft height={25} width={25} color={'white'}/>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.headerText}>{profile.username}</Text>
         </View>
-        <View style={styles.topRow}>
-          <Text style={styles.name}>{profile.first_name} {profile.last_name}</Text>
-        </View>
-        <View style={styles.subRow}>
-          <Text style={styles.info}>{profile.username}</Text>
-          <View style={styles.subRow}>
-            <MapPin style={{marginRight: 4}} height={16} width={16} color={'#e94f4e'}/>
-            <Text style={styles.info}>{profile.location}</Text>
+        <View style={styles.profileMainInfo}>
+          <View style={styles.imageContainer}>
+            <Image style={styles.image} source={{uri: profile.profile_picture}}/>
+          </View>
+          <View style={styles.mainInfoContainer}>
+            <View style={styles.namesSection}>
+              <Text style={styles.standardUsername}>{profile.username}</Text>
+              <View>
+              {
+                relationship === null 
+                  ? profile.public === 0
+                      ? <TouchableOpacity onPress={() => {addToFriends(profile)}} style={styles.statusContainerRed}><Text style={styles.statusFollowing}>Follow</Text></TouchableOpacity>
+                      : <TouchableOpacity onPress={() => {addToFriends(profile)}} style={styles.statusContainerRed}><Text style={styles.statusFollowing}>Follow</Text></TouchableOpacity>
+                  : relationship.status === 'pending'
+                      ? <TouchableOpacity onPress={() => {removeFromFriends(relationship.friend_id)}}  style={styles.statusContainer}><Text style={styles.statusFollowing}>Pending</Text></TouchableOpacity>
+                      : <TouchableOpacity onPress={() => {removeFromFriends(relationship.friend_id)}} style={styles.statusContainer}><Text style={styles.statusFollowing}>Unfollow</Text></TouchableOpacity>
+              }
+            </View>
+            </View>
+            <Text style={styles.standardInfoTextBottom}>{profile.full_name}</Text>
           </View>
         </View>
-        <View style={styles.row}>
-          <Text style={styles.info}><Text style={{color: '#e94f4e', fontWeight: 'bold'}}>{followers}</Text> Followers</Text>
-          <Text style={[styles.info, {marginLeft: 18}]}><Text style={{color: '#e94f4e', fontWeight: 'bold'}}>{following}</Text> Following</Text>
+        <View style={styles.quickSummary}>
+          <Text style={styles.text}>
+            Founder & CEO of Grubber
+            Always on the hunt for new foods and experiences.
+            Nothing unites the world like food!
+          </Text>
         </View>
-        {
-          relationship === null 
-            ? profile.public === 0 
-              ? <View style={styles.private}><Text style={styles.privateText}>Account Is Private...</Text></View>
-              : <View><View style={styles.optionRow}>
-                  <View style={styles.optionSelect}>
-                    {
-                      tabView === 'lists'
-                        ? <View style={styles.optionSelected}>
-                            <Text style={[styles.optionText, {color: '#e94f4e'}]}>Lists</Text>
-                          </View>
-                        : <TouchableOpacity onPress={() => {setTabView('lists')}} style={styles.option}>
-                            <Text style={styles.optionText}>Lists</Text>
-                          </TouchableOpacity>
-                    }
-                    {
-                      tabView === 'lists'
-                        ? <TouchableOpacity onPress={() => {setTabView('favorites')}} style={styles.option}>
-                            <Text style={styles.optionText}>Favorites</Text>
-                          </TouchableOpacity>
-                        : <View style={styles.optionSelected}>
-                            <Text style={[styles.optionText, {color: '#e94f4e'}]}>Favorites</Text>
-                          </View>
-                    }
+        <View style={styles.quickSummary}>
+          <Text style={styles.value}>{following} <Text style={{fontWeight: '500'}}>Follwoing</Text></Text>
+          <Text style={styles.text}>|</Text>
+          <Text style={styles.value}>{followers} <Text style={{fontWeight: '500'}}>Followers</Text></Text>
+        </View>
+        <View style={styles.tabbedMenus}>
+          {
+            tabView === 'post'
+              ? <View style={styles.selectionContainer}>
+                  <View style={styles.tab}>
+                    <Text style={styles.tabTextSelected}>Posts</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => {setTabView('lists')}} style={styles.tab}>
+                    <Text style={styles.tabText}>Lists</Text>
+                  </TouchableOpacity>
+                </View>
+              : <View style={styles.selectionContainer}>
+                  <TouchableOpacity onPress={() => {setTabView('post')}} style={styles.tab}>
+                    <Text style={styles.tabText}>Posts</Text>
+                  </TouchableOpacity>
+                  <View style={styles.tab}>
+                    <Text style={styles.tabTextSelected}>Lists</Text>
                   </View>
                 </View>
-                <View style={styles.scrollContainer}>
-                  <ScrollView style={styles.scroll}>
-                    {
-                      tabView === 'lists'
-                        ? lists.length > 0
-                            ? lists.map((list) => {
-                                return(
-                                  <View>
-                                    <ProfileListPlaceTileComponent item={list}/>
-                                  </View>
-                                )
-                              })
-                            : <View style={styles.empty}><Text style={styles.emptyText}>No Lists...</Text></View>
-                        : favorites.length > 0
-                            ? favorites.map((list) => {
-                                return(
-                                  <View>
-                                    <ProfileFavoritesTile place={list}/>
-                                  </View>
-                                )
-                              })
-                            : <View style={styles.empty}><Text style={styles.emptyText}>No Favorites...</Text></View>
-                    }
-                  </ScrollView>
+          }
+        </View>
+        <ScrollView style={styles.tabSection}>
+          {
+            tabView === 'post'
+              ? <View style={styles.specificContent}>
+                  <PostGridComponent posts={allPosts}/>
                 </View>
-              </View>
-            : relationship.status === 'pending'
-                ? profile.public === 0
-                    ? <View style={styles.private}><Text style={styles.privateText}>Account Is Private...</Text></View>
-                    : <View>
-                        <View style={styles.optionRow}>
-                          <View style={styles.optionSelect}>
-                            {
-                              tabView === 'lists'
-                                ? <View style={styles.optionSelected}>
-                                    <Text style={[styles.optionText, {color: '#e94f4e'}]}>Lists</Text>
-                                  </View>
-                                : <TouchableOpacity onPress={() => {setTabView('lists')}} style={styles.option}>
-                                    <Text style={styles.optionText}>Lists</Text>
-                                  </TouchableOpacity>
-                            }
-                            {
-                              tabView === 'lists'
-                                ? <TouchableOpacity onPress={() => {setTabView('favorites')}} style={styles.option}>
-                                    <Text style={styles.optionText}>Favorites</Text>
-                                  </TouchableOpacity>
-                                : <View style={styles.optionSelected}>
-                                    <Text style={[styles.optionText, {color: '#e94f4e'}]}>Favorites</Text>
-                                  </View>
-                            }
-                          </View>
-                        </View>
-                        <View style={styles.scrollContainer}>
-                          <ScrollView style={styles.scroll}>
-                            {
-                              tabView === 'lists'
-                                ? lists.length > 0
-                                    ? lists.map((list) => {
-                                        return(
-                                          <View>
-                                            <ProfileListPlaceTileComponent item={list}/>
-                                          </View>
-                                        )
-                                      })
-                                    : <View style={styles.empty}><Text style={styles.emptyText}>No Lists...</Text></View>
-                                : favorites.length > 0
-                                    ? favorites.map((list) => {
-                                        return(
-                                          <View>
-                                            <ProfileFavoritesTile place={list}/>
-                                          </View>
-                                        )
-                                      })
-                                    : <View style={styles.empty}><Text style={styles.emptyText}>No Favorites...</Text></View>
-                            }
-                          </ScrollView>
-                        </View>
-                      </View>
-                : <View style={styles.fullController}>
-                    <View style={styles.optionRow}>
-                      <View style={styles.optionSelect}>
-                        {
-                          tabView === 'lists'
-                            ? <View style={styles.optionSelected}>
-                                <Text style={[styles.optionText, {color: '#e94f4e'}]}>Lists</Text>
-                              </View>
-                            : <TouchableOpacity onPress={() => {setTabView('lists')}} style={styles.option}>
-                                <Text style={styles.optionText}>Lists</Text>
-                              </TouchableOpacity>
-                        }
-                        {
-                          tabView === 'lists'
-                            ? <TouchableOpacity onPress={() => {setTabView('favorites')}} style={styles.option}>
-                                <Text style={styles.optionText}>Favorites</Text>
-                              </TouchableOpacity>
-                            : <View style={styles.optionSelected}>
-                                <Text style={[styles.optionText, {color: '#e94f4e'}]}>Favorites</Text>
-                              </View>
-                        }
-                      </View>
-                    </View>
-                    <View style={styles.scrollContainer}>
-                      <ScrollView style={styles.scroll}>
-                        {
-                          tabView === 'lists'
-                            ? lists.length > 0
-                                ? lists.map((list) => {
-                                    return(
-                                      <View>
-                                        <ProfileListPlaceTileComponent item={list}/>
-                                      </View>
-                                    )
-                                  })
-                                : <View style={styles.empty}><Text style={styles.emptyText}>No Lists...</Text></View>
-                            : favorites.length > 0
-                                ? favorites.map((list) => {
-                                    return(
-                                      <View>
-                                        <ProfileFavoritesTile place={list}/>
-                                      </View>
-                                    )
-                                  })
-                                : <View style={styles.empty}><Text style={styles.emptyText}>No Favorites...</Text></View>
-                        }
-                      </ScrollView>
-                    </View>
-                  </View>
-
-        }
+              : <View style={styles.specificContent}>
+                  <ListGridComponent/>
+                </View>
+          }
+        </ScrollView>
       </View>
     </View>
   )
@@ -375,7 +293,7 @@ const styles = StyleSheet.create({
   },
   subContainer: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#2c2c2c',
     zIndex: 2,
   },
   manuIcon: {
@@ -387,11 +305,28 @@ const styles = StyleSheet.create({
     padding: 8
   },
   header: {
-    width: '100%',
+    backgroundColor: 'black',
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+  },
+  post: {
+    borderBottomColor: 'grey',
+    borderBottomWidth: 2,
+    padding: 8
+  },
+  headerText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold'
+  },
+  headerIcons: {
+    display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'space-between',
-    overflow: 'hidden'
+    alignItems: 'center',
   },
   subHeader: {
     width: '100%',
@@ -412,119 +347,122 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     zIndex: 10
   },
+  profileMainInfo: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: 16
+  },
+  mainInfoContainer:{
+    flex: 1,
+    marginLeft: 16
+  },
+  standardInfoText: {
+    fontSize: 18,
+    color: 'white'
+  },
+  standardInfoTextBottom: {
+    fontSize: 18,
+    color: 'white',
+    marginTop: 12
+  },
+  standardUsername: {
+    fontSize: 18,
+    color: 'white',
+    fontWeight: 'bold'
+  },
+  quickSummary: {
+    marginTop: 18,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16
+  },
+  text: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+    marginRight: 8
+  },
+  value: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginRight: 6
+  },
   imageContainer: {
-    height: 100,
-    width: 100,
+    height: 75,
+    width: 75,
     backgroundColor:'grey',
     borderRadius: 50,
     borderColor: 'white',
     borderWidth: 2,
   },
   image: {
-    height: 100, 
-    width: 100, 
+    height: 75,
+    width: 75,
     borderRadius: 50,
     borderWidth: 3,
     borderColor: 'white'
   },
-  topRow: {
-    paddingHorizontal: 16,
+  tabbedMenus: {
+    marginTop: 18,
+    paddingHorizontal: 16
+  },
+  specificContent: {
+    flex: 1,
+    marginTop: 8,
+  },
+  selectionContainer: {
     width: '100%',
-    marginTop: 56
-  },
-  name: {
-    fontSize: 28,
-    fontWeight: 'bold'
-  },
-  row: {
-    width: '100%',
-    paddingHorizontal: 16,
-    display: 'flex',
-    flexDirection: 'row',
-    marginTop: 4
-  },
-  subRow: {
-    width: '100%',
-    paddingHorizontal: 16,
-    paddingVertical: 4,
-    display:'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  info: {
-    fontSize: 20,
-    fontWeight: '500',
-    color: 'grey'
-  },
-  optionRow: {
-    marginTop: 16,
-    paddingHorizontal: 16,
-    width: '100%'
-  },
-  optionSelect: {
-    backgroundColor:'white',
+    backgroundColor: '#4d4d4d',
+    borderRadius: 8,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 6,
-    borderRadius: 32
+    padding: 8,
   },
-  optionSelected: {
+  tab: {
     width: '50%',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
-    color: '#e94f4e',
-    borderRadius: 30,
-    backgroundColor: '#FFF4F4'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  option: {
-    width: '50%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    borderRadius: 30,
-  },
-  optionText: {
-    fontSize: 22,
+  tabText: {
     paddingVertical: 8,
+    width: '100%',
+    fontWeight: 'bold',
+    fontSize: 18,
+    backgroundColor: '#4d4d4d',
+    textAlign: 'center',
+    borderRadius: 8,
+    overflow: 'hidden',
+    color: 'white'
   },
-  fullController: {
-    flex: 1
+  tabTextSelected: {
+    paddingVertical: 8,
+    width: '100%',
+    fontWeight: 'bold',
+    fontSize: 18,
+    backgroundColor: 'grey',
+    textAlign: 'center',
+    borderRadius: 8,
+    overflow: 'hidden',
+    color: 'white'
   },
-  scrollContainer: {
-    flex: 1,
+  tabSection: {
     marginTop: 16,
-    paddingHorizontal: 16,
+    paddingHorizontal: 8,
   },
-  scroll: {
-    paddingHorizontal: 16,
-    backgroundColor: 'white',
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-  },
-  empty: {
+  namesSection: {
     width: '100%',
     display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center'
-  },
-  emptyText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 50
-  },
-  private: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  privateText: {
-    fontSize: 24,
-    fontWeight: 'bold',
   },
   statusContainer: {
     backgroundColor: 'rgba(200,200,200,.4)',

@@ -32,7 +32,6 @@ const FavoritesSinglePlaceScreen = ({route}) => {
   }, [])
 
   const openYelp = async (yelp_url: string) => {
-    console.log(yelp_url)
     try {
       // Check if the Yelp app can be opened with the given URL
       const canOpen = await Linking.canOpenURL(yelp_url);
@@ -48,11 +47,9 @@ const FavoritesSinglePlaceScreen = ({route}) => {
   };
 
   const grabPlacePosts = () => {
-    console.log(place.place_id)
     let url = `https://grubberapi.com/api/v1/posts/place/${place.place_id}`
     axios.get(url)
       .then(response => {
-        console.log(response.data)
         setAllPosts(response.data)
       })
       .catch(error => {

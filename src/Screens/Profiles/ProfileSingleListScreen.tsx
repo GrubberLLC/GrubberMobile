@@ -9,10 +9,11 @@ import AddPlaceWithinListCompoent from '../../Components/Lists/AddPlaceWithinLis
 import { UserContext } from '../../Context/UserContext'
 import Dice from '../../Assets/casino.png'
 import ShowRandomPlaceCompoenent from '../../Components/Lists/ShowRandomPlaceCompoenent'
+import ProfilePlaceInListComponent from '../../Components/Profile/ProfilePlaceInListComponent'
 
 const imageWidth = Dimensions.get('window').width 
 
-const ProfileSingleListScreen = ({route}) => {
+const SingleListScreen = ({route}) => {
   const { list } = route.params
   const { user } = useContext(UserContext)
 
@@ -22,8 +23,6 @@ const ProfileSingleListScreen = ({route}) => {
   const [listPlaces, setListPlaces] = useState([])
 
   const [listMembers, setListMembers] = useState([])
-
-  const [currentMember, setCurrentMember] = useState(false)
 
   const [randomPlace, setRandomPlace] = useState(null)
   const [viewRandomPlace, setViewRandomPlace] = useState(false)
@@ -59,11 +58,6 @@ const ProfileSingleListScreen = ({route}) => {
     axios.get(url)
       .then(response => {
         setListMembers(response.data)
-        response.data.map((member) => {
-          if(member.user_id === user.userId){
-            setCurrentMember(true)
-          }
-        })
       })
       .catch(error => {
         console.error('Error fetching user lists:', error);
@@ -79,75 +73,79 @@ const ProfileSingleListScreen = ({route}) => {
     }
   }
 
+  function truncateString(str: string, maxLength = 20) {
+    if (str.length > maxLength) {
+      return str.slice(0, maxLength) + '...';
+    } else {
+      return str;
+    }
+  }
+
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{uri: list.picture}}/>
-        <View style={styles.overlay}></View>
-      </View>
       <View style={styles.header}>
-        <View style={styles.topBar}>
-          <TouchableOpacity onPress={() => {navigation.goBack()}} style={styles.iconContainer}>
-            <ChevronsLeft style={styles.icon} height={30} width={30} color={'white'}/>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+          <TouchableOpacity onPress={() => {navigation.goBack()}}>
+            <ChevronsLeft height={26} width={26} color={'white'} />
           </TouchableOpacity>
-          <View style={{display: 'flex', flexDirection: 'row'}}>
-            <TouchableOpacity onPress={() => {pickRandomPlace()}} style={styles.imageIconContainer}>
-              <Image source={Dice} height={30} width={30}/>
-            </TouchableOpacity>
-            {
-              currentMember
-                ? <TouchableOpacity onPress={() => {setViewAddPlace(!viewAddPlace)}} style={styles.iconContainerLeft}>
-                    <Plus style={styles.icon} height={30} width={30} color={'white'}/>
-                  </TouchableOpacity>
-                : null
-            }
-            {
-              currentMember
-                ? <TouchableOpacity onPress={() => {navigation.navigate('ListDetailsPage', {list: list})}} style={styles.iconContainer}>
-                    <Settings style={styles.icon} height={30} width={30} color={'white'}/>
-                  </TouchableOpacity>
-                : null
-            }
+          <Text style={styles.headerText}>{truncateString(list.name)}</Text>
+        </View>
+        <View style={styles.headerIcons}>
+          <TouchableOpacity style={styles.diceImage} onPress={() => {pickRandomPlace()}}>
+            <Image source={Dice} style={styles.diceImage}/>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {setViewAddPlace(!viewAddPlace)}}>
+            <Plus style={styles.icon} height={30} width={30} color={'white'}/>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {navigation.navigate('ProfielListDetails', {list: list})}} >
+            <Settings style={styles.icon} height={22} width={22} color={'white'}/>
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View style={{backgroundColor: '#2c2c2c', flex: 1, paddingVertical: 16, paddingHorizontal: 8}}>
+        {/* <View style={styles.mainImageContainer}>
+          <View style={styles.imageContainer}>
+            <Image source={{uri: list.picture}}  style={styles.mainIMage}/>
+            <View style={styles.overlay}>
+              <Text style={{fontSize: 24, fontWeight: 'bold', color: 'white'}}>{list.name}</Text>
+              <Text style={{fontSize: 20, fontWeight: '500', color: 'white'}}>{list.description}</Text>
+            </View>
           </View>
+        </View> */}
+        {/* <View style={styles.contentList}> */}
+          {
+            listPlaces.length > 0
+              ? <ScrollView>
+                  {
+                    listPlaces.map((place) => {
+                      return(
+                        <View style={{marginBottom: 16}}>
+                          <ProfilePlaceInListComponent item={place}/>
+                        </View>
+                      )
+                    }) 
+                  }
+                </ScrollView>
+              : <View style={styles.noPlace}><Text style={styles.noPlaceText}>No Places In List...</Text></View>
+          }
         </View>
-        <View style={styles.bottomSetion}>
-          <Text style={styles.name}>{list.name}</Text>
-          <Text style={styles.description}>{list.description}</Text>
-        </View>
-      </View>
-      <View style={styles.contentList}>
-        {
-          listPlaces.length > 0
-            ? <ScrollView>
-                {
-                  listPlaces.map((place) => {
-                    return(
-                      <View style={{padding: 16, paddingBottom: 0}}>
-                        <PlaceInListTileComponent item={place}/>
-                      </View>
-                    )
-                  }) 
-                }
-              </ScrollView>
-            : <View style={styles.noPlace}><Text style={styles.noPlaceText}>No Places In List...</Text></View>
-        }
-      </View>
-      <Modal
-        style={styles.modal}
-        animationType="slide"
-        transparent={true}
-        visible={viewAddPlace}
-      >
-        <AddPlaceWithinListCompoent setViewAddList={setViewAddPlace} viewAddList={viewAddPlace} list={list} getListPlaces={getListPlaces}/>
-      </Modal>
-      <Modal
-        style={styles.modal}
-        animationType="slide"
-        transparent={true}
-        visible={viewRandomPlace}
-      >
-        <ShowRandomPlaceCompoenent setViewRandomPlace={setViewRandomPlace} viewRandomPlace={viewRandomPlace} place={randomPlace}/>
-      </Modal>
+        <Modal
+          style={styles.modal}
+          animationType="slide"
+          transparent={true}
+          visible={viewAddPlace}
+        >
+          <AddPlaceWithinListCompoent setViewAddList={setViewAddPlace} viewAddList={viewAddPlace} list={list} getListPlaces={getListPlaces}/>
+        </Modal>
+        <Modal
+          style={styles.modal}
+          animationType="slide"
+          transparent={true}
+          visible={viewRandomPlace}
+        >
+          <ShowRandomPlaceCompoenent setViewRandomPlace={setViewRandomPlace} viewRandomPlace={viewRandomPlace} place={randomPlace}/>
+        </Modal>
+      {/* </View> */}
     </View>
   )
 }
@@ -157,33 +155,66 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
   },
-  imageContainer: {
-    position: 'absolute',
-    width: imageWidth,
-    height: imageWidth,
+  header: {
     backgroundColor: 'black',
-    borderRadius: 12,
-    marginTop: 8
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 16,
   },
-  image: {
-    width: imageWidth,
-    height: imageWidth,
-    zIndex: 3,
-    backgroundColor: 'black'
+  headerText: {
+    color: 'white',
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginLeft: 16
+  },
+  headerIcons: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  subHeader: {
+    width: '100%',
+    paddingHorizontal: 18
+  },
+  icon: {
+    marginLeft: 12
+  },
+  diceImage: {
+    height: 25,
+    width: 25
+  },
+  mainImageContainer: {
+    width: imageWidth - 16,
+    height: imageWidth - 140,
+  },
+  imageContainer: {
+    width: imageWidth - 16,
+    height: imageWidth - 140,
+  },
+  mainIMage: {
+    width: imageWidth - 16,
+    height: imageWidth - 140,
+    borderRadius: 8
   },
   overlay: {
     position: 'absolute',
-    width: imageWidth,
-    height: imageWidth,
-    backgroundColor: 'rgba(20, 20, 20,.5)',
-    zIndex: 4
-  },
-  header: {
-    width: '100%',
-    height: imageWidth - 120,
+    width: imageWidth - 16,
+    height: imageWidth - 140,
+    borderRadius: 8,
+    backgroundColor: 'rgba(0,0,0,.5)',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between'
+    justifyContent: 'flex-end',
+    padding: 16
+  },
+  contentList: {
+    flex: 1,
+    backgroundColor: '#2c2c2c',
+    overflow: 'hidden',
   },
   topBar: {
     width: '100%',
@@ -229,13 +260,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white'
   },
-  contentList: {
-    flex: 1,
-    backgroundColor: '#c2c2c2',
-    overflow: 'hidden',
-    borderTopLeftRadius: 32,
-    borderTopRightRadius: 32,
-  },
   noPlace: {
     flex: 1,
     display: 'flex',
@@ -246,7 +270,7 @@ const styles = StyleSheet.create({
   noPlaceText: {
     fontSize: 16,
     fontWeight: 'bold'
-  }
+  },
 })
 
-export default ProfileSingleListScreen
+export default SingleListScreen

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Modal, ScrollView, StyleSheet, Text, Dimensions, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { ChevronsLeft, Star } from 'react-native-feather'
+import { ChevronsLeft, Settings, Star } from 'react-native-feather'
 import { useNavigation } from '@react-navigation/native'
 import { YELP_API_KEY, BASE_URL } from '@env'
 import axios from 'axios'
@@ -8,25 +8,19 @@ import Yelp from '../../Assets/yelp.png'
 import PlaceAddComment from '../../Components/Lists/PlaceAddComment'
 import CommentComponent from '../../Components/Lists/CommentComponent'
 import { Linking, Alert } from 'react-native';
-import SearchPlaceAddCommentComponent from '../../Components/Search/SearchPlaceAddCommentComponent'
+import SinglePlacePostComponent from '../../Components/Lists/SinglePlacePostComponent'
 
 const imageWidth = Dimensions.get('window').width 
 
-const SearchSinglePlaceScreen = ({route}) => {
+const ProfileSinglePlace = ({route}) => {
   const { place } = route.params
 
   const navigation = useNavigation()
 
-  const [currentPlace, setCurrentPlace] = useState(null)
-
-  const [loading, setLoading] = useState(true)
-
-  const [comments, setComments] = useState([])
-  const [addComment, setAddComment] = useState(false)
+  const [allPosts, setAllPosts] = useState([])
 
   useEffect(() => {
-    grabYelpInfo(place.id)
-    grabPlaceComments()
+    grabPlacePosts()
   }, [])
 
   const openYelp = async (yelp_url: string) => {
@@ -44,110 +38,65 @@ const SearchSinglePlaceScreen = ({route}) => {
     }
   };
 
-
-  const grabYelpInfo = (place_id: string) => {
-    const apiKey = YELP_API_KEY;
-    const options = {
-      method: 'GET',
-      headers: { 
-        'accept': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      url: `https://api.yelp.com/v3/businesses/${place_id}`
-    };
-    
-    axios(options)
-      .then(response => {
-        setCurrentPlace(response.data)
-        setLoading(false)
-      })
-      .catch(err => {
-        console.error('yelp fusion error: ', err);
-      });
-  }
-
-  const grabPlaceComments = () => {
-    const url = `https://grubberapi.com/api/v1/comments/place/${place.id}`
+  const grabPlacePosts = () => {
+    let url = `https://grubberapi.com/api/v1/posts/place/${place.place_id}`
     axios.get(url)
       .then(response => {
-        setComments(response.data)
+        setAllPosts(response.data)
       })
       .catch(error => {
-        console.error('Error fetching user lists:', error);
+        console.error('Error fetching profile:', error);
         throw error;
       });
   }
 
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{uri: place.image_url}}/>
-        <View style={styles.overlay}></View>
-      </View>
       <View style={styles.header}>
-        <View style={styles.topBar}>
-          <TouchableOpacity onPress={() => {navigation.goBack()}} style={styles.iconContainer}>
-            <ChevronsLeft style={styles.icon} height={30} width={30} color={'white'}/>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {openYelp(place.url)}} style={styles.iconContainerRed}>
-            <Image style={styles.iconImage} source={Yelp}/>
+        <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+          <TouchableOpacity onPress={() => {navigation.goBack()}}>
+            <ChevronsLeft height={26} width={26} color={'white'} />
           </TouchableOpacity>
         </View>
-        <View style={styles.bottomBar}>
-          <View style={styles.rowSB}>
+        <View style={styles.headerIcons}>
+          <TouchableOpacity onPress={() => {openYelp(place.yelp_url)}} style={styles.diceImage}>
+            <Image source={Yelp} style={styles.diceImage}/>
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View style={styles.imageContainer}>
+        <Image style={styles.image} source={{uri: place.picture}}/>
+        <View style={styles.overlay}>
+          <View style={styles.infoTopBar}>
             <Text style={styles.name}>{place.name}</Text>
           </View>
-          <View style={styles.rowSB}>
-            <Text style={styles.address}>{place.location.address1}. {place.location.city}, {place.location.state} {place.location.zip_code}</Text>
-          </View>
-          <View style={styles.rowSB}>
-            <View style={styles.row}>
-              <Star height={20} width={20} color={'#e94f4e'} fill={'#e94f4e'}/>
+          <Text style={styles.activity}>{place.address_formatted}</Text>
+          <View style={styles.detailsRow}>
+            <View style={styles.detailsRowLeft}>
+              <Star style={{marginRight: 4}} height={18} width={18} fill={'#e94f4e'} color={'#e94f4e'}/>
               <Text style={styles.rating}>{place.rating}/5</Text>
-              <Text style={styles.reviews}>({place.review_count} reviews)</Text>
+              <Text style={styles.address}>({place.review_count} reviews)</Text>
             </View>
-            <Text style={styles.price}>{place.price}</Text>
           </View>
         </View>
       </View>
-      <View style={styles.contentList}>
+      <View style={styles.mainContnent}>
+      <View style={{paddingHorizontal: 8, paddingVertical: 16}}> 
+        <Text style={{fontSize: 24, fontWeight: 'bold', color: 'white'}}>Posts:</Text>
+      </View>
         {
-          loading
-            ? <View style={{flex: 1, display: 'flex', justifyContent: 'center', alignItems:'center'}}><ActivityIndicator size={'large'} color={'#e94f4e'}/></View>
-            : <View style={styles.placeContainer}>
-                <View style={styles.commentContainer}>
-                  <View style={styles.commentHeader}>
-                    <Text style={styles.commentTitle}>Comments:</Text>
-                    <TouchableOpacity onPress={() => {setAddComment(!addComment)}}>
-                      <Text style={styles.commentAdd}>Add Comment</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View>
-                    {
-                      comments.length > 0
-                        ? <ScrollView>
-                            {
-                              comments.map((comment) => {
-                                return(
-                                  <CommentComponent grabPlaceComments={grabPlaceComments} comment={comment}/>
-                                )
-                              })
-                            }
-                          </ScrollView>
-                        : <View style={styles.scrollContainer}><Text style={{fontSize: 18}}>No Comments..</Text></View>
-                    }
-                  </View>
-                </View>
-              </View>
+          allPosts.length > 0
+            ? <ScrollView style={{flex: 1}}>
+                {
+                  allPosts.map((item) => {
+                    return(
+                      <SinglePlacePostComponent item={item}/>
+                    )
+                  })
+                }
+              </ScrollView>
+            : <View style={styles.noPosts}><Text style={styles.noPostText}>No Posts Found</Text></View>
         }
-        <Modal
-          style={styles.modal}
-          animationType="slide"
-          transparent={true}
-          visible={addComment}
-        >
-          <SearchPlaceAddCommentComponent grabPlaceComments={grabPlaceComments} place={place} setAddComment={setAddComment} addComment={addComment}/>
-        </Modal>
       </View>
     </View>
   )
@@ -159,32 +108,100 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
   },
   imageContainer: {
-    position: 'absolute',
     width: imageWidth,
-    height: imageWidth,
+    height: imageWidth - 180,
     backgroundColor: 'black',
     borderRadius: 12,
     marginTop: 8
   },
   image: {
     width: imageWidth,
-    height: imageWidth,
+    height: imageWidth - 180,
     zIndex: 3,
     backgroundColor: 'black'
   },
   overlay: {
     position: 'absolute',
     width: imageWidth,
-    height: imageWidth,
+    height: imageWidth - 180,
     backgroundColor: 'rgba(20, 20, 20,.7)',
-    zIndex: 4
-  },
-  header: {
-    width: '100%',
-    height: imageWidth - 120,
+    zIndex: 4,
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'flex-end',
+    padding: 16
+  },
+  header: {
+    backgroundColor: 'black',
+    display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+  },
+  headerText: {
+    color: 'white',
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginLeft: 16
+  },
+  headerIcons: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  diceImage: {
+    height: 25,
+    width: 25
+  },
+  icon: {
+    marginLeft: 12
+  },
+  subHeader: {
+    width: '100%',
+    paddingHorizontal: 18
+  },
+  infoTopBar: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 6
+  },
+  activity: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: 'white'
+  },
+  detailsRowLeft: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,  
+  },
+  rating: {
+    fontSize: 18,
+    color: 'white',
+    fontWeight: 'bold',
+    marginRight: 4
+  },
+  address: {
+    fontSize: 18,
+    color: 'white',
+    fontWeight: 'bold',
+    marginRight: 4
+  },
+  detailsRow: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 4
   },
   topBar: {
     width: '100%',
@@ -243,16 +260,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#e94f4e'
-  },
-  address: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'white'
-  },
-  rating: {
-    marginLeft: 4,
-    fontWeight: 'bold',
-    color: 'white'
   },
   reviews: {
     marginLeft: 8,
@@ -319,7 +326,23 @@ const styles = StyleSheet.create({
   },
   bottomBar: {
     marginBottom: 40,
+  },
+  mainContnent: {
+    flex: 1,
+    backgroundColor: '#2c2c2c'
+  },
+  noPosts: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noPostText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white'
   }
 })
 
-export default SearchSinglePlaceScreen
+export default ProfileSinglePlace

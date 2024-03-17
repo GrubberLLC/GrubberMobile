@@ -29,7 +29,6 @@ const SelectListComponent = (props) => {
             {
               userLists.length > 0
                 ? userLists.map((item) => {
-                  console.log(item)
                   return(
                     <TouchableOpacity onPress={() => {setNewList(item)}} style={styles.placeContainer}>
                       <Image style={styles.placeImage} source={{uri: item.picture}}/>

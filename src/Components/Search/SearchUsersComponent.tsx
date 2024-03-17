@@ -50,7 +50,6 @@ const SearchUsersComponent = () => {
 
   const rejectFriendRequest = (profile_id: string) => {
     const following = followingList.find(following => following.following_id === profile_id);
-    console.log(following)
     const url = `https://grubberapi.com/api/v1/friends/${following.friend_id}`
     axios.delete(url)
       .then(response => {
@@ -71,7 +70,6 @@ const SearchUsersComponent = () => {
     }
     axios.post(url, friendData)
       .then(response => {
-        console.log('created request')
           getAllFollowing()
       })
       .catch(error => {

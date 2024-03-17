@@ -57,14 +57,12 @@ const SinglePostComponent = (props) => {
 
   const createLike = () => {
     let url = `https://grubberapi.com/api/v1/likes/`
-    console.log(item.post_id)
     const likeData = {
       post_id: item.post_id,
       user_id: user.userId
     }
     axios.post(url, likeData)
       .then(response => {
-        console.log(response.data.length)
         getPostLikes()
       })
       .catch(error => {
@@ -77,7 +75,6 @@ const SinglePostComponent = (props) => {
     let url = `https://grubberapi.com/api/v1/likes/${item.post_id}`
     axios.get(url)
       .then(response => {
-        console.log(response.data.length)
         setPostLikes(response.data)
       })
       .catch(error => {

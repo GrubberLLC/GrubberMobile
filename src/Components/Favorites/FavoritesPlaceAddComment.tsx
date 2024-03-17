@@ -23,10 +23,6 @@ const FavoritesPlaceAddComment = (props) => {
   const [loading, setLoading] = useState(false)
 
 
-  useEffect(() => {
-    console.log('palce: ', place)
-  }, [])
-
   const handleNameChange = (text: string) => {
     setName(text)
   }
@@ -85,7 +81,6 @@ const FavoritesPlaceAddComment = (props) => {
 
   const uploadImage = async () => {
     setLoading(true)
-    console.log(commentImage === null)
     if(commentImage != null){
       try {
           const blob = await getBlob(); 
@@ -124,7 +119,6 @@ const FavoritesPlaceAddComment = (props) => {
       place_id: place.yelp_id,
       place_list_id: null
     }
-    console.log(list_data)
     axios.post(url, list_data)
       .then(response => {
         newCommentActivity(place)

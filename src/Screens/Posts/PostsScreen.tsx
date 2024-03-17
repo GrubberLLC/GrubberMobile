@@ -44,7 +44,6 @@ const PostsScreen = () => {
     const url = `https://grubberapi.com/api/v1/members/list/pending/${user.userId}`
     axios.get(url)
       .then(response => {
-        console.log(response.data)
         setGroupRequestCount(response.data.length)
       })
       .catch(error => {
@@ -57,7 +56,6 @@ const PostsScreen = () => {
     const url = `https://grubberapi.com/api/v1/friends/following/${user.userId}`
     axios.get(url)
       .then(response => {
-        console.log(response.data.length)
         setFriendRequestCount(response.data.length)
       })
       .catch(error => {
@@ -70,7 +68,6 @@ const PostsScreen = () => {
     let url = `https://grubberapi.com/api/v1/posts/user/${user.userId}`
     axios.get(url)
       .then(response => {
-        console.log(response.data.length)
         setPosts(response.data)
       })
       .catch(error => {
@@ -114,7 +111,6 @@ const PostsScreen = () => {
               ? <>
                   {
                     posts.map((item) => {
-                      console.log(item)
                       return(
                         <SinglePostComponent item={item} profile={profile}/>
                       )

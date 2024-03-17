@@ -81,7 +81,6 @@ const PlaceAddComment = (props) => {
 
   const uploadImage = async () => {
     setLoading(true)
-    console.log(commentImage === null)
     if(commentImage != null){
       try {
           const blob = await getBlob(); 

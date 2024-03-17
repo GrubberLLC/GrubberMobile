@@ -25,7 +25,6 @@ const SinglePlaceScreen = ({route}) => {
   const [addComment, setAddComment] = useState(false)
 
   useEffect(() => {
-    console.log(place)
     grabYelpInfo(place.id)
     grabPlaceComments()
   }, [])
@@ -59,7 +58,6 @@ const SinglePlaceScreen = ({route}) => {
     
     axios(options)
       .then(response => {
-        console.log(response.data)
         setCurrentPlace(response.data)
         setLoading(false)
       })

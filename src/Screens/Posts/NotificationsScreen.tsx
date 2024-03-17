@@ -34,7 +34,6 @@ const NotificationsScreen = () => {
     const url = `https://grubberapi.com/api/v1/members/list/pending/${user.userId}`
     axios.get(url)
       .then(response => {
-        console.log(response.data)
         setGroupRequests(response.data)
       })
       .catch(error => {
@@ -59,7 +58,6 @@ const NotificationsScreen = () => {
     const url = `https://grubberapi.com/api/v1/friends/following/${user.userId}`
     axios.get(url)
       .then(response => {
-        console.log(response.data.length)
         setFriendReqeuests(response.data)
       })
       .catch(error => {

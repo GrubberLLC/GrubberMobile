@@ -39,11 +39,9 @@ const SearchPlaceScreen = ({route}) => {
   };
 
   const grabPlacePosts = () => {
-    console.log(place.place_id)
     let url = `https://grubberapi.com/api/v1/posts/place/${place.place_id}`
     axios.get(url)
       .then(response => {
-        console.log(response.data)
         setAllPosts(response.data)
       })
       .catch(error => {

@@ -77,7 +77,6 @@ const AddPostScreen = () => {
   }
 
   const addToPlaces = (place: any, list: any) => {
-    console.log('adding place to databse')
     let url = `https://grubberapi.com/api/v1/places/`
     const formatted_address = `${place.location.address1} ${place.location.city}, ${place.location.state} ${place.location.zip_code}`
     const placeData = {
@@ -106,9 +105,7 @@ const AddPostScreen = () => {
   }
 
   const submitPost = (place_id: number) => {
-    console.log('place is in databse')
     let url = `https://grubberapi.com/api/v1/posts/`
-    console.log(user.userId)
     const postData = {
       user_id: user.userId,
       media_url: media,
@@ -122,7 +119,6 @@ const AddPostScreen = () => {
     }
     axios.post(url, postData)
       .then(response => {
-        console.log('created record')
         setLoading(false)
         navigation.goBack()
       })

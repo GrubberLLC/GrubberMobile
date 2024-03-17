@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#2c2c2c',
     paddingVertical: 25,
     display: 'flex',
     flexDirection: 'column',
@@ -99,7 +99,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'white'
   },
   pictureText: {
     fontSize: 20,
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: 'white',
+    backgroundColor: '#4d4d4d',
     alignItems: 'center',
     padding: 12,
     borderBottomColor: 'lightgrey',
@@ -165,10 +166,12 @@ const styles = StyleSheet.create({
   username: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: 'white'
   },
   profilename: {
     fontSize: 16,
-    marginTop: 2
+    marginTop: 2,
+    color: 'white'
   },
   removeContainer: {
     borderRadius: 32 ,
@@ -176,7 +179,7 @@ const styles = StyleSheet.create({
     padding: 6
   },
   remove: {
-    color: 'black',
+    color: 'white',
     height: 32,
     width: 32,
     padding: 8

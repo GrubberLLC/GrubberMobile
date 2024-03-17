@@ -3,12 +3,14 @@ import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, Activity
 import { UserContext } from '../../Context/UserContext'
 import { ArrowRight, ArrowUp, ChevronsLeft, Heart, MessageSquare, Star, X } from 'react-native-feather'
 import axios from 'axios'
+import { useNavigation } from '@react-navigation/native'
 
 const deviceWidth = Dimensions.get('window').width
 const ImageWidth = deviceWidth - 16
 
-const SinglePostScreen = (props) => {
-  const {viewPost, toggleViewPost, item} = props
+const ProfileSinglePostScreen = ({route}) => {
+  const {viewPost, toggleViewPost, item} = route.params
+  const navigation = useNavigation()
 
   const { profile, user } = useContext(UserContext)
 
@@ -19,6 +21,8 @@ const SinglePostScreen = (props) => {
   let lastTap: any = null;
 
   const hasUserLikedPost = postLikes.some(like => like.user_id === user.userId);
+
+  console.log(item)
 
   useEffect(() => {
     getPostLikes()
@@ -126,7 +130,7 @@ const SinglePostScreen = (props) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => {toggleViewPost()}} >
+          <TouchableOpacity onPress={() => {navigation.goBack()}} >
             <ChevronsLeft height={26} width={26} color={'white'}/>
           </TouchableOpacity>
         </View>
@@ -140,7 +144,7 @@ const SinglePostScreen = (props) => {
           </View>
           <TouchableWithoutFeedback onPress={handleDoubleTap}>
             <View style={styles.image}>
-              <Image style={styles.image} source={{uri: item.media_url}}/>
+              <Image style={styles.image} source={{uri: item.picture}}/>
             </View>
           </TouchableWithoutFeedback>
           <View style={styles.actionSection}>
@@ -358,4 +362,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default SinglePostScreen
+export default ProfileSinglePostScreen

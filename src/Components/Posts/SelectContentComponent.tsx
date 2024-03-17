@@ -58,7 +58,6 @@ const SelectContentComponent = (props) => {
   };
 
   const getBlob = () => {
-    console.log(selectedMedia)
     return fetch(selectedMedia.uri)
       .then(response => response.blob()) // Convert the response to a blob
       .catch(error => {

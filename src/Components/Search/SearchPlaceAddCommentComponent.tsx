@@ -22,11 +22,6 @@ const SearchPlaceAddCommentComponent = (props) => {
   const [commentImage, setCommentImage] = useState(null)
   const [loading, setLoading] = useState(false)
 
-
-  useEffect(() => {
-    console.log('palce: ', place)
-  }, [])
-
   const handleNameChange = (text: string) => {
     setName(text)
   }
@@ -85,7 +80,6 @@ const SearchPlaceAddCommentComponent = (props) => {
 
   const uploadImage = async () => {
     setLoading(true)
-    console.log(commentImage === null)
     if(commentImage != null){
       try {
           const blob = await getBlob(); 
@@ -124,7 +118,6 @@ const SearchPlaceAddCommentComponent = (props) => {
       place_id: place.id,
       place_list_id: null
     }
-    console.log(list_data)
     axios.post(url, list_data)
       .then(response => {
         newCommentActivity(place)
