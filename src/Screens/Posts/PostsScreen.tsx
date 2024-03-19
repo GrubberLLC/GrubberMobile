@@ -65,9 +65,10 @@ const PostsScreen = () => {
   }
 
   const getuserPosts = (user_id: string) => {
-    let url = `https://grubberapi.com/api/v1/posts/user/${user.userId}`
+    let url = `https://grubberapi.com/api/v1/posts/friend/${user.userId}`
     axios.get(url)
       .then(response => {
+        console.log(response.data)
         setPosts(response.data)
       })
       .catch(error => {
@@ -99,7 +100,7 @@ const PostsScreen = () => {
 
   return (
     <View style={styles.container}>
-      {
+      { 
         profile 
           ? displayFeed()
           : null
@@ -118,8 +119,8 @@ const PostsScreen = () => {
                   }
                 </>
               : <View style={styles.scollContent}>
-                  <Text>No posts</Text>
-                  <Text>Start Following foodies</Text>
+                  <Text style={styles.emptyText}>No posts</Text>
+                  <Text style={styles.emptyText}>Start Following foodies</Text>
                 </View>
           }
         </ScrollView>
@@ -228,6 +229,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     top: -5
+  },
+  scollContent: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 54
+  },
+  emptyText: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    color: 'white',
+    marginBottom: 16
   }
 })
 

@@ -100,13 +100,13 @@ const SinglePostComponent = (props) => {
   
   return (
     <View key={item.post_id} style={styles.post}>
-      <View style={styles.profileHeader}>
-        <Image style={styles.profileImage} source={{uri: profile.profile_picture ? profile.profile_picture : null}}/>
+      <TouchableOpacity onPress={() => {navigation.navigate('UserProfileScreen', {profile: profile})}} style={styles.profileHeader}>
+        <Image style={styles.profileImage} source={{uri: item.profile_picture ? item.profile_picture : null}}/>
         <View style={{marginLeft: 16}}>
-          <Text style={styles.profileUserName}>{profile.username}</Text>
-          <Text style={styles.profileName}>{profile.full_name}</Text>
+          <Text style={styles.profileUserName}>{item.username}</Text>
+          <Text style={styles.profileName}>{item.full_name}</Text>
         </View>
-      </View>
+      </TouchableOpacity>
       <TouchableWithoutFeedback onPress={handleDoubleTap}>
         <View style={styles.image}>
           <Image style={styles.image} source={{uri: item.media_url}}/>

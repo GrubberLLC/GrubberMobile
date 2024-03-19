@@ -130,9 +130,7 @@ const ProfileScreen  = () => {
         </View>
         <View style={styles.quickSummary}>
           <Text style={styles.text}>
-            Founder & CEO of Grubber
-            Always on the hunt for new foods and experiences.
-            Nothing unites the world like food!
+            {profile.bio}
           </Text>
         </View>
         <View style={styles.quickSummary}>

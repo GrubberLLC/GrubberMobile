@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, ActivityIndicator } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, ActivityIndicator, ScrollView } from 'react-native'
 import { Plus, RefreshCcw, X } from 'react-native-feather'
 import InputFieldComponent from '../General/InputFieldComponent'
 import { useNavigation } from '@react-navigation/native'
@@ -26,6 +26,7 @@ const EditProfileComponent = (props) => {
   const [lastname, setLastName] = useState(profile.last_name)
   const [picture, setPicture] = useState(profile.profile_picture)
   const [isPublic, setIsPublic] = useState(profile.public === 1 ? true : false)
+  const [bio, setBio] = useState('')
   const [loading, setLoading] = useState(false)
 
   const updatePhone = (text: string) => {
@@ -44,6 +45,13 @@ const EditProfileComponent = (props) => {
     setLastName(text)
   }
 
+  const updateBio = (text: string) => {
+    const currentLength = text.length
+    currentLength < 255
+      ? setBio(text)
+      : null
+  }
+
   const updatePublic = () => {
     setIsPublic(!isPublic)
   }
@@ -60,6 +68,7 @@ const EditProfileComponent = (props) => {
       following: profile.following,
       full_name: firstName + ' ' + lastname,
       first_name: firstName,
+      bio: bio,
       last_name: lastname,
       phone: phone,
       location: location,
@@ -130,34 +139,38 @@ const EditProfileComponent = (props) => {
 
   const uploadImage = async () => {
     setLoading(true)
-    try {
-        const blob = await getBlob(); // Wait for the blob to be fetched
-        // Assuming listImage.fileName and listImage.type are available
-        const fileName = picture.fileName;
-        const fileType = picture.type;
-        const folderName = "profileImages";
-
-        const fileKey = `${folderName}/${fileName}`;
-
-        // Wait for the uploadData function to complete
-        const result = await uploadData({
-            key: fileKey,
-            data: blob,
-            options: {
-                accessLevel: 'guest',
-            }
-        }).result;
-        let uploadedImage = `https://seekify-storage-da999112230453-staging.s3.us-west-1.amazonaws.com/public/${result.key}`
-        updateProfile(uploadedImage)
-
-    } catch (error) {
-        console.log('Error:', error);
+    if(picture === profile.profile_picture){
+      updateProfile(picture)
+    } else {
+      try {
+          const blob = await getBlob(); // Wait for the blob to be fetched
+          // Assuming listImage.fileName and listImage.type are available
+          const fileName = picture.fileName;
+          const fileType = picture.type;
+          const folderName = "profileImages";
+  
+          const fileKey = `${folderName}/${fileName}`;
+  
+          // Wait for the uploadData function to complete
+          const result = await uploadData({
+              key: fileKey,
+              data: blob,
+              options: {
+                  accessLevel: 'guest',
+              }
+          }).result;
+          let uploadedImage = `https://seekify-storage-da999112230453-staging.s3.us-west-1.amazonaws.com/public/${result.key}`
+          updateProfile(uploadedImage)
+  
+      } catch (error) {
+          console.log('Error:', error);
+      }
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
+      <ScrollView style={styles.content}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Create New list</Text>
           <TouchableOpacity onPress={() => {setEditProfile(!editProfile)}} >
@@ -196,6 +209,15 @@ const EditProfileComponent = (props) => {
           secure={false}
           validation={true}
         />
+        <InputFieldComponent 
+          palceholder='bio'
+          label='MessageSquare'
+          value={bio}
+          handleFunction={updateBio}
+          secure={false}
+          validation={false}
+          multiline={true}
+        />
         <InputSwitchComponent 
           palceholder='Public'
           label='Eye'
@@ -210,7 +232,7 @@ const EditProfileComponent = (props) => {
             picture === null 
               ? <TouchableOpacity onPress={selectImage} style={styles.placeHolder}><Plus  height={26} width={26} color={'black'}/></TouchableOpacity>
               : <View style={styles.menuOptions}>
-                  <Image source={picture} style={styles.image} />
+                  <Image source={{uri: picture}} style={styles.image} />
                   <View>
                     <TouchableOpacity onPress={selectImage}>
                       <RefreshCcw style={styles.imageIcon} />
@@ -223,7 +245,7 @@ const EditProfileComponent = (props) => {
           }
         </View>
         <MainButton label={loading ? <ActivityIndicator size={'small'} color={'white'}/> : 'Update Profile'} handleFunction={() => {uploadImage()}}/>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }
@@ -237,8 +259,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0'
   },
   content: {
-    width: '100%',
-    backgroundColor: 'white',
+    flex: 1,
+    backgroundColor: '#2c2c2c',
     paddingVertical: 25,
     display: 'flex',
     flexDirection: 'column',
@@ -254,12 +276,14 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'white'
   },
   pictureText: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginTop: 16
+    marginTop: 16,
+    color: 'white'
   },
   placeHolder: {
     height: 125,

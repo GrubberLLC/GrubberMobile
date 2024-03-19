@@ -8,7 +8,8 @@ const InputFieldComponent = (props) => {
     value,
     handleFunction,
     secure,
-    palceholder
+    palceholder,
+    multiline
   } = props
 
   const IconComponent = Icons[label];
@@ -25,6 +26,7 @@ const InputFieldComponent = (props) => {
         secureTextEntry={secure}
         value={value}
         onChangeText={(text) => {handleFunction(text)}}
+        multiline={multiline ? true : false}
       />
     </View>
   )

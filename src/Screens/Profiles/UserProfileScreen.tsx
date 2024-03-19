@@ -236,13 +236,15 @@ const UserProfileScreen  = ({route}) => {
             <Text style={styles.standardInfoTextBottom}>{profile.full_name}</Text>
           </View>
         </View>
-        <View style={styles.quickSummary}>
-          <Text style={styles.text}>
-            Founder & CEO of Grubber
-            Always on the hunt for new foods and experiences.
-            Nothing unites the world like food!
-          </Text>
-        </View>
+        {
+          profile.bio 
+            ? <View style={styles.quickSummary}>
+                <Text style={styles.text}>
+                  {profile.bio}
+                </Text>
+              </View>
+            : null
+        }
         <View style={styles.quickSummary}>
           <Text style={styles.value}>{following} <Text style={{fontWeight: '500'}}>Follwoing</Text></Text>
           <Text style={styles.text}>|</Text>

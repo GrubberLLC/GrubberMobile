@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
   content: {
     width: '100%',
-    backgroundColor: 'white',
+    backgroundColor: '#2c2c2c',
     paddingVertical: 25,
     display: 'flex',
     flexDirection: 'column',
@@ -150,7 +150,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'white'
   },
   pictureText: {
     fontSize: 20,

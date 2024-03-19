@@ -2,6 +2,7 @@ import React from 'react'
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image, Alert, Dimensions, ScrollView } from 'react-native'
 import { X } from 'react-native-feather'
 import imageSource from '../../Assets/about.png'
+import Cafe from '../../Assets/cafe.png'
 
 const imageWidth = Dimensions.get('window').width - 32
 const imageHeight = (imageWidth * 9) / 16;
@@ -19,12 +20,12 @@ const AboutComponent = (props) => {
           </TouchableOpacity>
         </View>
         <View style={styles.imageContainer}>
-          <Image style={styles.image} source={imageSource}/>
+          <Image style={styles.image} source={Cafe}/>
         </View>
         <ScrollView style={styles.scroll}>
           <Text style={styles.name}>Grubber LLC.</Text>
           <Text style={styles.slogan}>Discover, Savor, Share, and Dine Together.</Text>
-          <Text style={styles.established}>Established: Match 1, 2025</Text>
+          <Text style={styles.established}>Established: November 11, 2023</Text>
           <Text style={styles.version}>Version 1.0.0 (March 1, 2025)</Text>
           <Text style={styles.legal}>© Grubber LLC. All Rights Reserved (2024 - 2025)</Text>
           <Text style={styles.paragraph}>Welcome to Grubber, the ultimate social dining app that's redefining the way friends and family discover, share, and enjoy the world of food together. At Grubber, we believe that meals are more than just food on a plate; they're shared experiences that forge lasting bonds and create cherished memories. Our platform is designed to make finding your next great meal an adventure that you can embark on with those closest to you.</Text>
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#2c2c2c',
     paddingVertical: 25,
     display: 'flex',
     flexDirection: 'column',
@@ -63,12 +64,12 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'white'
   },
   imageContainer: {
     height: imageHeight,
     width: imageWidth,
-    backgroundColor: 'grey',
     marginVertical: 28
   },
   image: {
@@ -86,23 +87,28 @@ const styles = StyleSheet.create({
   },
   slogan: {
     fontSize: 16,
-    marginTop: 8
+    marginTop: 8,
+    color: 'white'
   },
   established: {
     fontSize: 16,
-    marginTop: 8
+    marginTop: 8,
+    color: 'white'
   },
   version: {
     fontSize: 14,
-    marginTop: 4
+    marginTop: 4,
+    color: 'white'
   },
   legal: {
     fontSize: 14,
-    marginTop: 4
+    marginTop: 4,
+    color: 'white'
   },
   paragraph: {
     fontSize: 16,
-    marginTop: 8
+    marginTop: 8,
+    color: 'white'
   }
 })
 
