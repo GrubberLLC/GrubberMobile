@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ActivityIndicator, Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { Bell, Check, ChevronsLeft, ChevronsRight, Plus, Star, X } from 'react-native-feather'
 import { BASE_URL, YELP_API_KEY } from '@env';
@@ -14,16 +14,17 @@ import { useNavigation } from '@react-navigation/native';
 const deviceWidth = Dimensions.get('window').width
 const ImageWidth = deviceWidth - 32
 
-const AddPostScreen = () => {
+const EditPostScreen = ({route}) => {
+  const {item} = route.params
   const navigation = useNavigation()
 
   const {profile, user} = useContext(UserContext)
 
-  const [media, setMedia] = useState(null)
-  const [caption, setCaption] = useState('')
-  const [visible, setVisible] = useState(2)
+  const [media, setMedia] = useState(item.media_url)
+  const [caption, setCaption] = useState(item.caption)
+  const [visible, setVisible] = useState(item.visible)
   const [place, setPlace] = useState(null)
-  const [list, setList] = useState(null)
+  const [list, setList] = useState(item.list_id)
 
   const [loading, setLoading] = useState(false)
 
@@ -35,6 +36,10 @@ const AddPostScreen = () => {
 
   const [validCaption, setValidCaption] = useState(true)
   const [validPlace, setValidPlace] = useState(true)
+
+  useEffect(() => {
+    grabPlaceById()
+  }, [])
 
   const toggleCaptionText = (text: string) => {
     setCaption(text)
@@ -74,6 +79,22 @@ const AddPostScreen = () => {
     validPlace && validCaption
       ? checkIfPlaceInDatabase()
       : null
+  }
+
+  const grabPlaceById = async () => {
+    const apiKey = YELP_API_KEY;
+    const yelpUrl = `https://api.yelp.com/v3/businesses/${item.yelp_id}`;
+    try {
+      const response = await axios.get(yelpUrl, {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+        },
+      });
+      setPlace(response.data)
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching data from Yelp:', error);
+    }
   }
 
   const checkIfPlaceInDatabase = () => {
@@ -507,4 +528,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default AddPostScreen
+export default EditPostScreen

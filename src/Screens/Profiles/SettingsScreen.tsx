@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 20,
+    paddingVertical: 14,
     paddingHorizontal: 16,
   },
   post: {

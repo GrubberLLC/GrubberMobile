@@ -25,7 +25,6 @@ const SinglePlacePostComponent = (props) => {
   let lastTap: any = null;
 
   useEffect(() => {
-    console.log(item)
     getPostLikes()
   }, [])
 

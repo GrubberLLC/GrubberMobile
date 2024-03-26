@@ -9,7 +9,7 @@ const PostGridComponent = ({ posts }) => {
   const windowWidth = Dimensions.get('window').width;
   const itemWidth = (windowWidth - 24 ) / 4; 
 
-  function limitStringSize(str: string, maxLength = 95) {
+  function limitStringSize(str: string, maxLength = 85) {
     return str.length > maxLength ? str.substring(0, maxLength) + '...' : str;
   }
 
@@ -19,11 +19,11 @@ const PostGridComponent = ({ posts }) => {
         return(
           <View key={index} style={styles.wrapper}>
             {
-              image.picture
-                ? <Image style={[styles.image, { width: itemWidth, height: itemWidth }]} source={{ uri: image.picture }} />
-                : null
+              image.media_url === null
+                ? null
+                : <Image style={[styles.image, { width: itemWidth, height: itemWidth, marginRight: 16 }]} source={{ uri: image.media_url }} />
             }
-            <View style={{flex: 1, marginLeft: 16}}>
+            <View style={{flex: 1}}>
               <Text style={styles.text}>{limitStringSize(image.caption)}</Text>
               <TouchableOpacity onPress={() => {navigation.navigate('ProfileSinglePostScreen', {item: image})}} style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 8}}>
                 <Text style={{color: 'white', fontWeight: 'bold'}}>Post Details</Text>
@@ -40,10 +40,10 @@ const PostGridComponent = ({ posts }) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between',
     borderBottomColor: 'grey',
-    borderBottomWidth: 2
+    borderBottomWidth: 2,
   },
   wrapper: {
     width: '100%',
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover', // Ensure images fill the square space
   },
   text: {
-    fontSize: 16,
+    fontSize: 18,
     color: 'white',
   }
 });

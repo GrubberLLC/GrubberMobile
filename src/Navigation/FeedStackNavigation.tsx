@@ -8,6 +8,8 @@ import SinglePlaceScreen from '../Screens/Posts/SinglePlaceScreen';
 import NotificationsScreen from '../Screens/Posts/NotificationsScreen';
 import SinglePlaceInPostScreen from '../Screens/Posts/SinglePlaceInPostScreen';
 import UserProfileScreen from '../Screens/Profiles/UserProfileScreen';
+import EditPostScreen from '../Screens/Posts/EditPostScreen';
+import SinglePostScreen from '../Screens/Posts/SinglePostScreen';
 
 const StackNav = createStackNavigator();
 
@@ -21,7 +23,9 @@ const FeedStackNavigation = () => {
       <StackNav.Screen name="PostSinglePlaceScreen" component={SinglePlaceScreen} />
       <StackNav.Screen name="NotificationsScreen" component={NotificationsScreen} />
       <StackNav.Screen name="SinglePlaceInPostScreen" component={SinglePlaceInPostScreen} />
+      <StackNav.Screen name="SinglePostScreen" component={SinglePostScreen} />
       <StackNav.Screen name="UserProfileScreen" component={UserProfileScreen} />
+      <StackNav.Screen name="EditPostScreen" component={EditPostScreen} />
     </StackNav.Navigator>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { UserContext } from '../../Context/UserContext'
 import { Bell, Circle, Heart, MessageSquare, Plus, Star } from 'react-native-feather'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
@@ -68,7 +68,6 @@ const PostsScreen = () => {
     let url = `https://grubberapi.com/api/v1/posts/friend/${user.userId}`
     axios.get(url)
       .then(response => {
-        console.log(response.data)
         setPosts(response.data)
       })
       .catch(error => {
@@ -139,7 +138,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 20,
+    paddingVertical: 14,
     paddingHorizontal: 16,
   },
   post: {

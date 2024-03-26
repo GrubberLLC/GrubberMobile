@@ -167,7 +167,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 18
   },
   inputIcon: {
     marginRight: 8

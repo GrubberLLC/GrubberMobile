@@ -22,8 +22,6 @@ const ProfileSinglePostScreen = ({route}) => {
 
   const hasUserLikedPost = postLikes.some(like => like.user_id === user.userId);
 
-  console.log(item)
-
   useEffect(() => {
     getPostLikes()
     getPostComments()

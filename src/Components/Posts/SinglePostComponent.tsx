@@ -21,8 +21,6 @@ const SinglePostComponent = (props) => {
   const [showFullCaption, setShowFullCaption] = useState(false)
   const [postLikes, setPostLikes] = useState([])
 
-  const [viewPost, setViewPost] = useState(false)
-
   const hasUserLikedPost = postLikes.some(like => like.user_id === user.userId);
 
   let lastTap: any = null;
@@ -30,10 +28,6 @@ const SinglePostComponent = (props) => {
   useEffect(() => {
     getPostLikes()
   }, [])
-
-  const toggleViewPost = () => {
-    setViewPost(!viewPost)
-  }
 
   const handleDoubleTap = () => {
     const now = Date.now();
@@ -107,49 +101,74 @@ const SinglePostComponent = (props) => {
           <Text style={styles.profileName}>{item.full_name}</Text>
         </View>
       </TouchableOpacity>
-      <TouchableWithoutFeedback onPress={handleDoubleTap}>
-        <View style={styles.image}>
-          <Image style={styles.image} source={{uri: item.media_url}}/>
-        </View>
-      </TouchableWithoutFeedback>
-      <View style={styles.actionSection}>
-        <TouchableOpacity onPress={() => {hasUserLikedPost ? removeLike() : createLike()}}>
-          <Heart height={24} width={24} color={hasUserLikedPost ? '#e94f4e' : 'white'} fill={hasUserLikedPost ? '#e94f4e' : 'none'}/>
-        </TouchableOpacity>
-        <Text style={{paddingHorizontal: 8, color: 'white', fontWeight: 'bold'}}>{postLikes.length} Likes</Text>
-      </View>
-      <TouchableOpacity onPress={() => {navigation.navigate('SinglePlaceInPostScreen', {place: item})}} style={styles.place}>
-        <Image style={styles.placeImage} source={{uri: item.picture}}/>
-        <View style={{marginLeft: 16}} >
-          <View>
-            <Text style={{marginRight: 12, color: 'white', fontWeight: '700', fontSize: 16}}>{item.name}</Text>
-          </View>
-          <View style={styles.buttonRow}>
-            <Star style={{marginRight: 5}} height={24} width={24} color={'#e94f4e'} fill={'#e94f4e'}/>
-            <Text style={{marginRight: 12, color: 'white', fontWeight: '700', fontSize: 16}}>{item.rating}/5</Text>
-            <Text style={{marginRight: 12, color: 'white', fontWeight: '700', fontSize: 16}}>({item.review_count} Reviews)</Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-      <View style={{width: '100%', paddingBottom: 16}}>
-        <Text style={{color: 'white', fontSize: 16}}>{truncateString(item.caption)} 
-          <TouchableOpacity onPress={() => {setShowFullCaption(!showFullCaption)}}>
-            <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}></Text>
-          </TouchableOpacity>
-        </Text>
-      </View>
-      <TouchableOpacity onPress={() => {toggleViewPost()}} style={styles.viewMoreContainer} >
+      {
+        item.media_url === null
+          ? <>
+              <TouchableOpacity onPress={handleDoubleTap} style={{width: '100%', paddingTop: 16}}>
+                <Text style={{color: 'white', fontSize: 16}}>{truncateString(item.caption)} 
+                  <TouchableOpacity onPress={() => {setShowFullCaption(!showFullCaption)}}>
+                    <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}></Text>
+                  </TouchableOpacity>
+                </Text>
+              </TouchableOpacity>
+              <View style={styles.actionSection}>
+                <TouchableOpacity onPress={() => {hasUserLikedPost ? removeLike() : createLike()}}>
+                  <Heart height={24} width={24} color={hasUserLikedPost ? '#e94f4e' : 'white'} fill={hasUserLikedPost ? '#e94f4e' : 'none'}/>
+                </TouchableOpacity>
+                <Text style={{paddingHorizontal: 8, color: 'white', fontWeight: 'bold'}}>{postLikes.length} Likes</Text>
+              </View>
+              <TouchableOpacity onPress={() => {navigation.navigate('SinglePlaceInPostScreen', {place: item})}} style={styles.place}>
+                <Image style={styles.placeImage} source={{uri: item.picture}}/>
+                <View style={{marginLeft: 16}} >
+                  <View>
+                    <Text style={{marginRight: 12, color: 'white', fontWeight: '700', fontSize: 16}}>{item.name}</Text>
+                  </View>
+                  <View style={styles.buttonRow}>
+                    <Star style={{marginRight: 5}} height={24} width={24} color={'#e94f4e'} fill={'#e94f4e'}/>
+                    <Text style={{marginRight: 12, color: 'white', fontWeight: '700', fontSize: 16}}>{item.rating}/5</Text>
+                    <Text style={{marginRight: 12, color: 'white', fontWeight: '700', fontSize: 16}}>({item.review_count} Reviews)</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </>
+          : <>
+              <TouchableWithoutFeedback onPress={handleDoubleTap}>
+                <View style={styles.image}>
+                  <Image style={styles.image} source={{uri: item.media_url}}/>
+                </View>
+              </TouchableWithoutFeedback>
+              <View style={styles.actionSection}>
+                <TouchableOpacity onPress={() => {hasUserLikedPost ? removeLike() : createLike()}}>
+                  <Heart height={24} width={24} color={hasUserLikedPost ? '#e94f4e' : 'white'} fill={hasUserLikedPost ? '#e94f4e' : 'none'}/>
+                </TouchableOpacity>
+                <Text style={{paddingHorizontal: 8, color: 'white', fontWeight: 'bold'}}>{postLikes.length} Likes</Text>
+              </View>
+              <TouchableOpacity onPress={() => {navigation.navigate('SinglePlaceInPostScreen', {place: item})}} style={styles.place}>
+                <Image style={styles.placeImage} source={{uri: item.picture}}/>
+                <View style={{marginLeft: 16}} >
+                  <View>
+                    <Text style={{marginRight: 12, color: 'white', fontWeight: '700', fontSize: 16}}>{item.name}</Text>
+                  </View>
+                  <View style={styles.buttonRow}>
+                    <Star style={{marginRight: 5}} height={24} width={24} color={'#e94f4e'} fill={'#e94f4e'}/>
+                    <Text style={{marginRight: 12, color: 'white', fontWeight: '700', fontSize: 16}}>{item.rating}/5</Text>
+                    <Text style={{marginRight: 12, color: 'white', fontWeight: '700', fontSize: 16}}>({item.review_count} Reviews)</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+              <View style={{width: '100%', paddingBottom: 16}}>
+                <Text style={{color: 'white', fontSize: 16}}>{truncateString(item.caption)} 
+                  <TouchableOpacity onPress={() => {setShowFullCaption(!showFullCaption)}}>
+                    <Text style={{color: 'white', fontSize: 16, fontWeight: 'bold'}}></Text>
+                  </TouchableOpacity>
+                </Text>
+              </View>
+            </>
+      }
+      <TouchableOpacity onPress={() => {navigation.navigate('SinglePostScreen', {item: item})}} style={styles.viewMoreContainer} >
         <Text style={{color: 'white', fontWeight: 'bold'}}>Post Details </Text>
         <ChevronsRight style={{marginLeft: 8}} height={16} width={16} color={'white'}/>
       </TouchableOpacity>
-      <Modal
-        style={styles.modal}
-        animationType="slide"
-        transparent={true}
-        visible={viewPost}
-      >
-        <SinglePostScreen viewPost={viewPost} toggleViewPost={toggleViewPost} item={item}/>
-      </Modal>
     </View>
   )
 }

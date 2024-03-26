@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
   },
   tabSection: {
     marginTop: 16,
-    paddingHorizontal: 8,
+    paddingHorizontal: 8
   },
 })
 

@@ -30,7 +30,6 @@ const ListGridComponent = () => {
   return (
     <View style={styles.container}>
       {userLists.map((item, index) => {
-        console.log(item)
         return(
           <TouchableOpacity onPress={() => {navigation.navigate('ProfileSingleListScreen', {list: item})}} key={index} style={styles.wrapper}>
             {
